@@ -1,0 +1,49 @@
+body,
+html {
+  height: 100%;
+  margin: 0;
+}
+
+canvas {
+  display: block;
+  border: 1px solid black;
+  width: 100%;
+  height: 100%;
+}
+
+.left-column {
+  flex: 0 0 80%;
+}
+
+.right-column {
+  flex: 1;
+  margin-left: 20px;
+}
+
+input.expression {
+  font: 24px Courier;
+  border: none;
+  width: 100px;
+  background-color: whitesmoke;
+}
+
+input.addvar {
+  width: 45%;
+  font: 14px Courier;
+}
+
+#variablesContainer {
+  font: 14px Courier;
+  height: 57%;
+}
+
+#variablesContainer > p {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.hints > p {
+  font: 14px Courier;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
