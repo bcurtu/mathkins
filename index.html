@@ -20,23 +20,27 @@
   </div>
 
   <div class="right-column">
-    <h2>Variables</h2>
+    <h3>Variables</h3>
     <input id="newVariableInput" class="addvar" type="text" placeholder="v: 12">
     <button onclick="addVariable();">Add Variable</button>
     <div id="variablesContainer"></div>
+    <button id="resetButton">Reset values and calculations</button>
     <hr>
-    <h2>Hints</h2>
+    <h3>Hints</h3>
     <div class="hints">
-      <p>3+5=8</p>
       <p>3*5=15</p>
-      <p>15/5=3</p>
+      <p>45/5=9</p>
       <p>2**3=8 (power)</p>
       <p>8-2=6->x</p>
       <p>x*4=24->y</p>
       <p>x+y=30</p>
     </div>
     <hr>
-    <button id="resetButton">Reset values and calculations</button>
+    <h3>Configuration</h3>
+    <p>
+      Decimals: <input type="number" value="2" id="decimals" class="setdecimals">
+      <button onclick="setDecimals();">set</button>
+    </p>
   </div>
 
 </body>

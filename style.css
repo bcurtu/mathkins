@@ -4,6 +4,10 @@ html {
   margin: 0;
 }
 
+h3 {
+  font-family: Courier;
+}
+
 canvas {
   display: block;
   border: 1px solid black;
@@ -33,17 +37,16 @@ input.addvar {
 }
 
 #variablesContainer {
-  font: 14px Courier;
-  height: 57%;
+  height: 50%;
 }
 
-#variablesContainer > p {
-  margin-bottom: 5px;
-  margin-top: 5px;
-}
-
-.hints > p {
+p {
   font: 14px Courier;
   margin-bottom: 5px;
   margin-top: 5px;
+}
+
+input.setdecimals {
+  width: 10%;
+  font: 14px Courier;
 }

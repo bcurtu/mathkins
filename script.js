@@ -1,5 +1,6 @@
 let variables = {};
 let assignedVariableNames = [];
+let decimals = 2;
 
 document.addEventListener('DOMContentLoaded', (event) => {
   loadState();
@@ -24,7 +25,7 @@ function addTextInput(x, y) {
 
 function process_cmd(input) {
   const value = input.value;
-  const assignmentMatch = value.match(/=?(\d+\.?\d*)->([a-zA-Z]+)$/);
+  const assignmentMatch = value.match(/=?(\d+\.?\d*)->([a-zA-Z]+[a-zA-Z0-9_]*)$/);
   if (assignmentMatch) {
     assignment(assignmentMatch[1], assignmentMatch[2].trim());
   } else {
@@ -58,7 +59,7 @@ function recalculation(operations_chain) {
   const parts = operations_chain.split('=');
   for(let i = 0; i < parts.length; i++) {
     let left = parts[i]
-    const assignmentMatch = left.match(/=?(\d+\.?\d*)->([a-zA-Z]+)$/);
+    const assignmentMatch = left.match(/=?(\d+\.?\d*)->([a-zA-Z]+[a-zA-Z0-9_]*)$/);
     if (assignmentMatch) {
       assignment(assignmentMatch[1], assignmentMatch[2].trim());
       break;
@@ -83,7 +84,7 @@ function calculate(value, noisy = true) {
       return;
     }
 
-    expression = expression.replace(/[a-zA-Z]+/g, function (match) {
+    expression = expression.replace(/[a-zA-Z]+[a-zA-Z0-9_]*/g, function (match) {
       if (match in variables) {
         return variables[match];
       } else {
@@ -101,7 +102,7 @@ function calculate(value, noisy = true) {
       if (Math.floor(result) === result) {
         result = parseInt(result, 10);
       } else {
-        result = result.toFixed(2);
+        result = result.toFixed(decimals);
       }
     }
     return result;
@@ -124,11 +125,13 @@ function displayVariables() {
     }
     variablesContainer.appendChild(variableElement);
   }
+
+  document.getElementById("decimals").value = decimals;
 }
 
 function addVariable() {
   const newVariableInput = document.getElementById('newVariableInput');
-  const variableMatch = newVariableInput.value.match(/([a-zA-Z]+):\s*(\d+\.?\d*)$/);
+  const variableMatch = newVariableInput.value.match(/([a-zA-Z]+[a-zA-Z0-9_]*):\s*(\d+\.?\d*)$/);
 
   if (variableMatch) {
     const variableName = variableMatch[1];
@@ -160,6 +163,7 @@ function saveState() {
   localStorage.setItem('inputs', JSON.stringify(inputs));
   localStorage.setItem('variables', JSON.stringify(variables));
   localStorage.setItem('assignedVariableNames', JSON.stringify(assignedVariableNames));
+  localStorage.setItem('decimals', JSON.stringify(decimals));
 }
 
 function loadState() {
@@ -180,6 +184,8 @@ function loadState() {
 
   Object.assign(variables, JSON.parse(localStorage.getItem('variables')) || {});
   Object.assign(assignedVariableNames, JSON.parse(localStorage.getItem('assignedVariableNames')) || []);
+  decimals = JSON.parse(localStorage.getItem('decimals')) || 2;
+
   displayVariables();
 }
 
@@ -204,6 +210,7 @@ function reset() {
   if (confirm('Are you sure you want to reset?\nAll the calculations and variables will be lost.')) {
     localStorage.removeItem('inputs');
     localStorage.removeItem('variables');
+    localStorage.removeItem('decimals');
     localStorage.removeItem('assignedVariableNames');
     location.reload();
   }
@@ -235,7 +242,7 @@ function selectInputsWithVariable(variable) {
   // Filtra los elementos de entrada por variable exacto
   let inputsWithVariable = Array.from(inputs).filter(input => {
     // Extrae todas las palabras del variable del input
-    let words = input.value.match(/[a-z]+/gi);
+    let words = input.value.match(/[a-z]+[a-z0-9_]*/gi);
 
     // Si hay words, itera sobre ellas y prueba la coincidencia
     if (words) {
@@ -265,4 +272,14 @@ function recalculate_variable(variable) {
       }
     }
   }
+}
+
+function setDecimals() {
+  const new_decimals = document.getElementById("decimals").value
+  if (parseInt(new_decimals)!=NaN) {
+    decimals = parseInt(new_decimals)
+    recalculate_variable(".")
+    saveState();
+  }
+  return false;
 }
