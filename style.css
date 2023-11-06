@@ -4,6 +4,10 @@ html {
   margin: 0;
 }
 
+.footer {
+  text-align: center;
+}
+
 h3 {
   font-family: Courier;
 }

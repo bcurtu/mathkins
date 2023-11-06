@@ -16,7 +16,10 @@
 </head>
 <body style="display: flex;">
   <div class="left-column">
-    <canvas id="myCanvas"></canvas>
+    <canvas id="myCanvas" ondragover="dragOver(event)" ondrop="drop(event)"></canvas>
+    <div class="footer">
+      <p>&copy; 2023 <a href="mailto:bcurtu+mathkins@gmail.com">bcurtu@gmail.com</a></p>
+    </div>
   </div>
 
   <div class="right-column">
@@ -35,14 +38,13 @@
     <h3>Hints</h3>
     <div class="hints">
       <p>3*5=15</p>
-      <p>45/5=9</p>
+      <p>43/5=8.60</p>
+      <p>43%5=3 (module)</p>
       <p>2**3=8 (power)</p>
-      <p>8-2=6->x</p>
+      <p>8-2=6->x (assignation)</p>
       <p>x*4=24->y</p>
-      <p>x+y=30</p>
+      <p>x+y=30 (with variables)</p>
     </div>
-    <hr>
-    <p>&copy; 2023 <a href="mailto:bcurtu+mathkins@gmail.com">bcurtu@gmail.com</a></p>
   </div>
 
 </body>

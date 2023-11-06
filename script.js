@@ -1,6 +1,7 @@
 let variables = {};
 let assignedVariableNames = [];
 let decimals = 2;
+let dragElement = null;
 
 document.addEventListener('DOMContentLoaded', (event) => {
   loadState();
@@ -13,6 +14,7 @@ function addTextInput(x, y) {
   input.style.left = x + 'px';
   input.style.top = y + 'px';
   input.classList.add('expression');
+  input.draggable = "true";
   add_keyup(input, x, y)
   document.body.appendChild(input);
   input.focus();
@@ -25,16 +27,18 @@ function addTextInput(x, y) {
 
 function process_cmd(input) {
   const value = input.value;
-  const assignmentMatch = value.match(/=?(\d+\.?\d*)->([a-zA-Z]+[a-zA-Z0-9_]*)$/);
-  if (assignmentMatch) {
-    assignment(assignmentMatch[1], assignmentMatch[2].trim());
+
+  let result;
+  if (value.endsWith('=')) {
+    result = calculate(value);
+    if (result) result = `${value}${result}`;
   } else {
-    const result = calculate(value);
-    if (result) {
-      input.value = `${value}${result}`;
-      adjust_width(input);
-      saveState();
-    }
+    result = recalculation(value);
+  }
+  if (result) {
+    input.value = `${result}`;
+    adjust_width(input);
+    saveState();
   }
 }
 
@@ -92,7 +96,7 @@ function calculate(value, noisy = true) {
       }
     });
 
-    if (!/^[\d+\-*/.\s()]*$/.test(expression)) {
+    if (!/^[\d+\-*%/.\s()]*$/.test(expression)) {
       if (noisy) alert('Invalid expression');
       return;
     }
@@ -176,6 +180,7 @@ function loadState() {
     input.style.top = inputData.top;
     input.style.left = inputData.left;
     input.classList.add('expression');
+    input.draggable = "true";
     add_keyup(input, inputData.top, inputData.left);
     adjust_width(input);
 
@@ -196,6 +201,8 @@ function add_keyup(input, x, y) {
     }
     adjust_width(input);
   });
+  input.addEventListener('dragstart', dragStart);
+  input.addEventListener('dragend', dragEnd);
 }
 
 function adjust_width(input) {
@@ -282,4 +289,31 @@ function setDecimals() {
     saveState();
   }
   return false;
+}
+
+function dragOver(event) {
+  event.preventDefault();
+  event.dataTransfer.dropEffect = "move";
+}
+
+function drop(event) {
+  event.preventDefault();
+  const x = event.clientX - dragElement.offsetWidth / 2;
+  const y = event.clientY;
+  dragElement.style.left = x + 'px';
+  dragElement.style.top = y + 'px';
+  saveState();
+
+  event.dataTransfer.clearData();
+}
+
+function dragStart(event) {
+  dragElement = event.target;
+  event.dataTransfer.setData('text/plain', event.target.id);
+  event.dataTransfer.dropEffect = "move";
+}
+
+function dragEnd(event) {
+  event.preventDefault();
+  dragElement = null;
 }
