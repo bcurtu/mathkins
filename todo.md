@@ -1,8 +1,8 @@
-* Initial placeholder (instructions)
 * logo y favicon
 * Página FAQs + link footer
-* exportar e importar + compartir
+* Initial placeholder (instructions)
 * Custom domain
+* Cookies warning (g analytics)
 
 * Rangos []
 * añadir las funciones para rangos: sum, max, min, avg, count

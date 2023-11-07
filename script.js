@@ -157,6 +157,41 @@ function addVariable() {
   newVariableInput.value = '';
 }
 
+function loadState() {
+  const inputs = JSON.parse(localStorage.getItem('inputs')) || [];
+
+  inputs.forEach(inputData => {
+    const input = document.createElement('input');
+    input.value = inputData.value;
+    input.style.position = 'absolute'; // Position the input absolutely
+    input.style.top = inputData.top;
+    input.style.left = inputData.left;
+    input.classList.add('expression');
+    input.draggable = "true";
+    add_keyup(input, inputData.top, inputData.left);
+    adjust_width(input);
+
+    document.body.appendChild(input);
+  });
+
+  Object.assign(variables, JSON.parse(localStorage.getItem('variables')) || {});
+  Object.assign(assignedVariableNames, JSON.parse(localStorage.getItem('assignedVariableNames')) || []);
+  decimals = JSON.parse(localStorage.getItem('decimals')) || 2;
+
+  displayVariables();
+}
+
+function add_keyup(input, x, y) {
+  input.addEventListener('keyup', function (event) {
+    if (event.key === '=' || event.key === 'Enter') {
+      process_cmd(input);
+    }
+    adjust_width(input);
+  });
+  input.addEventListener('dragstart', dragStart);
+  input.addEventListener('dragend', dragEnd);
+}
+
 function saveState() {
   const inputs = Array.from(document.querySelectorAll('input.expression')).map(input => ({
     value: input.value,
@@ -168,6 +203,27 @@ function saveState() {
   localStorage.setItem('variables', JSON.stringify(variables));
   localStorage.setItem('assignedVariableNames', JSON.stringify(assignedVariableNames));
   localStorage.setItem('decimals', JSON.stringify(decimals));
+}
+
+function exportState() {
+  const stateData = {
+    inputs: Array.from(document.querySelectorAll('input.expression')).map(input => ({
+      value: input.value,
+      top: input.style.top,
+      left: input.style.left
+    })),
+    variables: variables,
+    assignedVariableNames: assignedVariableNames,
+    decimals: decimals
+  };
+
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(stateData));
+  const downloadAnchorNode = document.createElement('a');
+  downloadAnchorNode.setAttribute("href", dataStr);
+  downloadAnchorNode.setAttribute("download", "mathkins.json");
+  document.body.appendChild(downloadAnchorNode); // required for firefox
+  downloadAnchorNode.click();
+  downloadAnchorNode.remove();
 }
 
 function loadState() {
@@ -192,6 +248,39 @@ function loadState() {
   decimals = JSON.parse(localStorage.getItem('decimals')) || 2;
 
   displayVariables();
+}
+
+function importFile() {
+  // Create a new input element
+  let input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json'; // Only accept .json files
+
+  // Listen for changes to the input field
+  input.onchange = function (event) {
+    // Get the selected file
+    let file = event.target.files[0];
+    if (file) {
+      // Call the importState function with the selected file
+      importState(file);
+    }
+  };
+
+  // Trigger the file dialog
+  input.click();
+}
+
+function importState(file) {
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    const stateData = JSON.parse(event.target.result);
+    localStorage.setItem('inputs', JSON.stringify(stateData.inputs));
+    localStorage.setItem('variables', JSON.stringify(stateData.variables));
+    localStorage.setItem('assignedVariableNames', JSON.stringify(stateData.assignedVariableNames));
+    localStorage.setItem('decimals', JSON.stringify(stateData.decimals));
+    location.reload();
+  };
+  reader.readAsText(file);
 }
 
 function add_keyup(input, x, y) {
@@ -232,7 +321,6 @@ function bind_events() {
 
     addTextInput(x, y);
   });
-  document.getElementById('resetButton').addEventListener('click', reset);
   document.getElementById('newVariableInput').addEventListener('keyup', function (event) {
     if (event.key === 'Enter') {
       addVariable();
