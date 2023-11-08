@@ -7,14 +7,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
   loadState();
   bind_events();
   if (!getCookie("firsttime")) {
-    let xhr = new XMLHttpRequest();
-    xhr.open('GET', 'padcalc.json', true);
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        importState(xhr.responseText);
-      }
-    };
-    xhr.send();
+    fetch('padcalc.json')
+      .then(response => response.json())
+      .then(data => importStateData(data));
     setCookie("firsttime", "true", 365 * 100); // Set cookie for 100 years
   }
 });
@@ -285,13 +280,17 @@ function importState(file) {
   const reader = new FileReader();
   reader.onload = function(event) {
     const stateData = JSON.parse(event.target.result);
-    localStorage.setItem('inputs', JSON.stringify(stateData.inputs));
-    localStorage.setItem('variables', JSON.stringify(stateData.variables));
-    localStorage.setItem('assignedVariableNames', JSON.stringify(stateData.assignedVariableNames));
-    localStorage.setItem('decimals', JSON.stringify(stateData.decimals));
-    location.reload();
+    importStateData(stateData);
   };
   reader.readAsText(file);
+}
+
+function importStateData(stateData) {
+  localStorage.setItem('inputs', JSON.stringify(stateData.inputs));
+  localStorage.setItem('variables', JSON.stringify(stateData.variables));
+  localStorage.setItem('assignedVariableNames', JSON.stringify(stateData.assignedVariableNames));
+  localStorage.setItem('decimals', JSON.stringify(stateData.decimals));
+  location.reload();
 }
 
 function add_keyup(input, x, y) {
