@@ -6,6 +6,17 @@ let dragElement = null;
 document.addEventListener('DOMContentLoaded', (event) => {
   loadState();
   bind_events();
+  if (!getCookie("firsttime")) {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', 'padcalc.json', true);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        importState(xhr.responseText);
+      }
+    };
+    xhr.send();
+    setCookie("firsttime", "true", 365 * 100); // Set cookie for 100 years
+  }
 });
 
 function addTextInput(x, y) {
@@ -404,4 +415,27 @@ function dragStart(event) {
 function dragEnd(event) {
   event.preventDefault();
   dragElement = null;
+}
+
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+function setCookie(cname, cvalue, exdays) {
+  let d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  let expires = "expires=" + d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
