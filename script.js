@@ -364,8 +364,20 @@ function selectInputsWithVariable(variable) {
   return inputsWithVariable;
 }
 
+function selectInputsWithDecimals() {
+  let inputs = document.querySelectorAll('input.expression');
+  let inputsWithDecimals = Array.from(inputs).filter(input => input.value.includes("."));
+  return inputsWithDecimals;
+}
+
+
 function recalculate_variable(variable) {
-  let inputs = selectInputsWithVariable(variable);
+  let inputs;
+  if (variable === ".") {
+    inputs = selectInputsWithDecimals();
+  } else {
+    inputs = selectInputsWithVariable(variable);
+  }
   for (let i = 0; i < inputs.length; i++) {
     let input = inputs[i];
     if (input.value.includes("=")) {

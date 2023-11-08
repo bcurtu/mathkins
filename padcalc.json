@@ -1,1 +1,67 @@
-{"inputs":[{"value":"Write your operations in the pad and press Enter","top":"39px","left":"70px"},{"value":"12*(5+7)=","top":"89px","left":"110px"},{"value":"Concatenate results and operations","top":"157px","left":"70px"},{"value":"72/8=9+12=21*12=252+(23-8)/15=253","top":"207px","left":"110px"},{"value":"Save results in variables","top":"270px","left":"70px"},{"value":"14/3=4.67->foo","top":"321px","left":"110px"},{"value":"Use you variables in your calculations","top":"391px","left":"70px"},{"value":"5*foo-7=16.35","top":"437px","left":"110px"},{"value":"Add variables in the left column and change the values!","top":"491px","left":"70px"},{"value":"250+bar=259-foo*4=240.32+100=340.32","top":"533px","left":"110px"},{"value":"Press the Reset button and start your calcs","top":"680px","left":"324px"}],"variables":{"foo":"4.67","bar":9},"assignedVariableNames":["foo"],"decimals":2}
+{
+  "inputs": [
+    {
+      "value": "Write your operations in the pad and press Enter",
+      "top": "39px",
+      "left": "70px"
+    },
+    {
+      "value": "12*(5+7)=",
+      "top": "89px",
+      "left": "110px"
+    },
+    {
+      "value": "Concatenate results and operations",
+      "top": "157px",
+      "left": "70px"
+    },
+    {
+      "value": "72/8=9+12=21*12=252+(23-8)/15=253",
+      "top": "207px",
+      "left": "110px"
+    },
+    {
+      "value": "Save results in variables",
+      "top": "270px",
+      "left": "70px"
+    },
+    {
+      "value": "14/3=4.67->foo",
+      "top": "321px",
+      "left": "110px"
+    },
+    {
+      "value": "Use you variables in your calculations",
+      "top": "391px",
+      "left": "70px"
+    },
+    {
+      "value": "5*foo-7=16.35",
+      "top": "437px",
+      "left": "110px"
+    },
+    {
+      "value": "Update variables in the left column to recalculate the values",
+      "top": "491px",
+      "left": "70px"
+    },
+    {
+      "value": "250+bar=259-foo*4=240.32+100=340.32",
+      "top": "533px",
+      "left": "110px"
+    },
+    {
+      "value": "Press the Reset button and start your calcs",
+      "top": "680px",
+      "left": "324px"
+    }
+  ],
+  "variables": {
+    "foo": "4.67",
+    "bar": 9
+  },
+  "assignedVariableNames": [
+    "foo"
+  ],
+  "decimals": 2
+}
