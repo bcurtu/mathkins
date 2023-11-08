@@ -1,5 +1,3 @@
-* logo y favicon
-* Página FAQs + link footer
 * Initial placeholder (instructions)
 * Custom domain
 * Cookies warning (g analytics)
