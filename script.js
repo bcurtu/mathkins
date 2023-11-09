@@ -69,7 +69,7 @@ function recalculation(operations_chain) {
   const parts = operations_chain.split('=');
   for(let i = 0; i < parts.length; i++) {
     let left = parts[i]
-    const assignmentMatch = left.match(/=?(\d+\.?\d*)->([a-zA-Z]+[a-zA-Z0-9_]*)$/);
+    const assignmentMatch = left.match(/=?(-?\d+\.?\d*)->([a-zA-Z]+[a-zA-Z0-9_]*)$/);
     if (assignmentMatch) {
       assignment(assignmentMatch[1], assignmentMatch[2].trim());
       break;
@@ -141,7 +141,7 @@ function displayVariables() {
 
 function addVariable() {
   const newVariableInput = document.getElementById('newVariableInput');
-  const variableMatch = newVariableInput.value.match(/([a-zA-Z]+[a-zA-Z0-9_]*):\s*(\d+\.?\d*)$/);
+  const variableMatch = newVariableInput.value.match(/([a-zA-Z]+[a-zA-Z0-9_]*):\s*(-?\d+\.?\d*)$/);
 
   if (variableMatch) {
     const variableName = variableMatch[1];
