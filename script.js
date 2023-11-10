@@ -1,5 +1,6 @@
 let variables = {};
 let assignedVariableNames = [];
+let protectedKeys = ["sin", "cos", "tan", "sqrt", "log", "abs", "round", "random", "cbrt"];
 let decimals = 2;
 let dragElement = null;
 
@@ -49,8 +50,15 @@ function process_cmd(input) {
 }
 
 function assignment(variableValue, variableName) {
-  if (variableName in variables && !(assignedVariableNames.includes(variableName))) {
+  if (variableName in variables &&
+      !(assignedVariableNames.includes(variableName))
+    ) {
     alert('Error: This variable name is already in use.');
+    return;
+  }
+
+  if (protectedKeys.includes(variableName)) {
+    alert('Error: This variable name belongs to an existing function.');
     return;
   }
 
@@ -142,6 +150,11 @@ function addVariable() {
       alert('Error: This variable name is used in the operations.');
       return;
     }
+    if (protectedKeys.includes(variableName)) {
+      alert('Error: This variable name belongs to an existing function.');
+      return;
+    }
+
     variables[variableName] = variableValue;
 
     displayVariables();
