@@ -1,7 +1,7 @@
 let decimals = 2;
 let variables = {pi: Math.PI, e: Math.E};
 let assignedVariableNames = [];
-let reservedKeys = ["pi", "e", "sin", "cos", "tan", "sqrt", "log", "abs", "round", "random", "cbrt"];
+let reservedKeys = ["pi", "e", "sin", "cos", "tan", "sqrt", "log", "abs", "round", "random", "cbrt", "max", "min"];
 let dragElement = null;
 
 document.addEventListener('DOMContentLoaded', (event) => {
