@@ -1,6 +1,6 @@
 let variables = {};
 let assignedVariableNames = [];
-let protectedKeys = ["sin", "cos", "tan", "sqrt", "log", "abs", "round", "random", "cbrt"];
+let reservedKeys = ["sin", "cos", "tan", "sqrt", "log", "abs", "round", "random", "cbrt"];
 let decimals = 2;
 let dragElement = null;
 
@@ -57,7 +57,7 @@ function assignment(variableValue, variableName) {
     return;
   }
 
-  if (protectedKeys.includes(variableName)) {
+  if (reservedKeys.includes(variableName)) {
     alert('Error: This variable name belongs to an existing function.');
     return;
   }
@@ -150,7 +150,7 @@ function addVariable() {
       alert('Error: This variable name is used in the operations.');
       return;
     }
-    if (protectedKeys.includes(variableName)) {
+    if (reservedKeys.includes(variableName)) {
       alert('Error: This variable name belongs to an existing function.');
       return;
     }
