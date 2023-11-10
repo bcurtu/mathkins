@@ -1,7 +1,7 @@
-let variables = {};
-let assignedVariableNames = [];
-let reservedKeys = ["sin", "cos", "tan", "sqrt", "log", "abs", "round", "random", "cbrt"];
 let decimals = 2;
+let variables = {pi: Math.PI, e: Math.E};
+let assignedVariableNames = [];
+let reservedKeys = ["pi", "e", "sin", "cos", "tan", "sqrt", "log", "abs", "round", "random", "cbrt"];
 let dragElement = null;
 
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -128,7 +128,8 @@ function displayVariables() {
     const variableValue = variables[variableName];
 
     const variableElement = document.createElement('p');
-    variableElement.textContent = `${variableName}: ${variableValue}`;
+    const value = eval(variableValue).toFixed(decimals);
+    variableElement.textContent = `${variableName}: ${value}`;
     if (assignedVariableNames.includes(variableName)) {
       variableElement.style.fontStyle = 'italic';
     }
@@ -294,6 +295,11 @@ function importStateData(stateData) {
   localStorage.setItem('variables', JSON.stringify(stateData.variables));
   localStorage.setItem('assignedVariableNames', JSON.stringify(stateData.assignedVariableNames));
   localStorage.setItem('decimals', JSON.stringify(stateData.decimals));
+  variables = {
+    ...variables,
+    pi: Math.PI,
+    e: Math.E
+  };
   location.reload();
 }
 
@@ -399,6 +405,7 @@ function setDecimals() {
   if (parseInt(new_decimals)!=NaN) {
     decimals = parseInt(new_decimals)
     recalculate_variable(".")
+    displayVariables();
     saveState();
   }
   return false;
@@ -457,7 +464,7 @@ function setCookie(cname, cvalue, exdays) {
 function evaluate(expression) {
   expression = applyReplacements(expression);
 
-  if (!/^[\d+\-*%/.\s()]*$/.test(expression)) {
+  if (!/^[\[?\d+\-*%/.\s(),]*\]?$/.test(expression)) {
     return;
   }
 
@@ -523,6 +530,24 @@ function applyReplacements(expression) {
     let expression = match.match(/^cbrt\((.*)\)/)[1];
     let result = evaluate(expression);
     return Math.cbrt(result);
+  });
+
+  expression = expression.replace(/max\(.*\)/g, function (match) {
+    let rango = match.match(/^max\((.*)\)/)[1];
+    let result = eval(rango);
+    return Math.max(...result);
+  });
+
+  expression = expression.replace(/min\(.*\)/g, function (match) {
+    let rango = match.match(/^min\((.*)\)/)[1];
+    let result = eval(rango);
+    return Math.min(...result);
+  });
+
+  expression = expression.replace(/max\(.*\)/g, function (match) {
+    let rango = match.match(/^max\((.*)\)/)[1];
+    let result = eval(rango);
+    return Math.max(...result);
   });
 
   return expression;
