@@ -94,20 +94,11 @@ function calculate(value, noisy = true) {
       return;
     }
 
-    expression = expression.replace(/[a-zA-Z]+[a-zA-Z0-9_]*/g, function (match) {
-      if (match in variables) {
-        return variables[match];
-      } else {
-        return match;
-      }
-    });
-
-    if (!/^[\d+\-*%/.\s()]*$/.test(expression)) {
+    let result =  evaluate(expression);
+    if (result == undefined) {
       if (noisy) alert('Invalid expression');
       return;
     }
-
-    let result = eval(expression);
     if (Number.isFinite(result)) {
       if (Math.floor(result) === result) {
         result = parseInt(result, 10);
@@ -370,7 +361,6 @@ function selectInputsWithDecimals() {
   return inputsWithDecimals;
 }
 
-
 function recalculate_variable(variable) {
   let inputs;
   if (variable === ".") {
@@ -449,4 +439,78 @@ function setCookie(cname, cvalue, exdays) {
   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
   let expires = "expires=" + d.toUTCString();
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function evaluate(expression) {
+  expression = applyReplacements(expression);
+
+  if (!/^[\d+\-*%/.\s()]*$/.test(expression)) {
+    return;
+  }
+
+  return eval(expression);
+}
+
+function applyReplacements(expression) {
+  expression = expression.replace(/[a-zA-Z]+[a-zA-Z0-9_]*/g, function (match) {
+    if (match in variables) {
+      return variables[match];
+    } else {
+      return match;
+    }
+  });
+
+  expression = expression.replace(/sin\(.*\)/g, function (match) {
+    let expression = match.match(/^sin\((.*)\)/)[1];
+    let result = evaluate(expression);
+    return Math.sin(result);
+  });
+
+  expression = expression.replace(/cos\(.*\)/g, function (match) {
+    let expression = match.match(/^cos\((.*)\)/)[1];
+    let result = evaluate(expression);
+    return Math.cos(result);
+  });
+
+  expression = expression.replace(/tan\(.*\)/g, function (match) {
+    let expression = match.match(/^tan\((.*)\)/)[1];
+    let result = evaluate(expression);
+    return Math.tan(result);
+  });
+
+  expression = expression.replace(/sqrt\(.*\)/g, function (match) {
+    let expression = match.match(/^sqrt\((.*)\)/)[1];
+    let result = evaluate(expression);
+    return Math.sqrt(result);
+  });
+
+  expression = expression.replace(/log\(.*\)/g, function (match) {
+    let expression = match.match(/^log\((.*)\)/)[1];
+    let result = evaluate(expression);
+    return Math.log(result);
+  });
+
+  expression = expression.replace(/abs\(.*\)/g, function (match) {
+    let expression = match.match(/^abs\((.*)\)/)[1];
+    let result = evaluate(expression);
+    return Math.abs(result);
+  });
+
+  expression = expression.replace(/round\(.*\)/g, function (match) {
+    let expression = match.match(/^round\((.*)\)/)[1];
+    let result = evaluate(expression);
+    return Math.round(result);
+  });
+
+  expression = expression.replace(/random\(\)/g, function (match) {
+    return Math.random();
+  });
+
+  expression = expression.replace(/cbrt\(.*\)/g, function (match) {
+    let expression = match.match(/^cbrt\((.*)\)/)[1];
+    let result = evaluate(expression);
+    return Math.cbrt(result);
+  });
+
+  return expression;
 }
