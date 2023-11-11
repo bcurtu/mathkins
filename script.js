@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
       .then(response => response.json())
       .then(data => importStateData(data));
     setCookie("firsttime", "true", 365 * 100); // Set cookie for 100 years
+    document.querySelectorAll('input.expression')[1].focus();
   }
 });
 
@@ -22,7 +23,7 @@ function addTextInput(x, y) {
   input.style.top = y + 'px';
   input.classList.add('expression');
   input.draggable = "true";
-  add_keyup(input, x, y)
+  add_listeners_to_input(input, x, y)
   document.body.appendChild(input);
   input.focus();
   input.addEventListener('focusout', function () {
@@ -44,7 +45,7 @@ function process_cmd(input) {
   }
   if (result) {
     input.value = `${result}`;
-    adjust_width(input);
+    adjust_style(input);
     saveState();
   }
 }
@@ -168,41 +169,6 @@ function addVariable() {
   newVariableInput.value = '';
 }
 
-function loadState() {
-  const inputs = JSON.parse(localStorage.getItem('inputs')) || [];
-
-  inputs.forEach(inputData => {
-    const input = document.createElement('input');
-    input.value = inputData.value;
-    input.style.position = 'absolute'; // Position the input absolutely
-    input.style.top = inputData.top;
-    input.style.left = inputData.left;
-    input.classList.add('expression');
-    input.draggable = "true";
-    add_keyup(input, inputData.top, inputData.left);
-    adjust_width(input);
-
-    document.body.appendChild(input);
-  });
-
-  Object.assign(variables, JSON.parse(localStorage.getItem('variables')) || {});
-  Object.assign(assignedVariableNames, JSON.parse(localStorage.getItem('assignedVariableNames')) || []);
-  decimals = JSON.parse(localStorage.getItem('decimals')) || 2;
-
-  displayVariables();
-}
-
-function add_keyup(input, x, y) {
-  input.addEventListener('keyup', function (event) {
-    if (event.key === '=' || event.key === 'Enter') {
-      process_cmd(input);
-    }
-    adjust_width(input);
-  });
-  input.addEventListener('dragstart', dragStart);
-  input.addEventListener('dragend', dragEnd);
-}
-
 function saveState() {
   const inputs = Array.from(document.querySelectorAll('input.expression')).map(input => ({
     value: input.value,
@@ -248,8 +214,8 @@ function loadState() {
     input.style.left = inputData.left;
     input.classList.add('expression');
     input.draggable = "true";
-    add_keyup(input, inputData.top, inputData.left);
-    adjust_width(input);
+    add_listeners_to_input(input, inputData.top, inputData.left);
+    adjust_style(input);
 
     document.body.appendChild(input);
   });
@@ -303,10 +269,11 @@ function importStateData(stateData) {
   location.reload();
 }
 
-function add_keyup(input, x, y) {
+function add_listeners_to_input(input, x, y) {
   input.addEventListener('keyup', function (event) {
     if (event.key === '=' || event.key === 'Enter') {
       process_cmd(input);
+      adjust_style(input);
     }
     adjust_width(input);
   });
@@ -319,6 +286,19 @@ function adjust_width(input) {
   const newWidth = ((input.value.length + 1) * 16);
   if (preWidth < newWidth) {
     input.style.width = newWidth + 'px';
+  }
+}
+
+function adjust_style(input) {
+  const preWidth = input.offsetWidth;
+  const newWidth = ((input.value.length + 1) * 16);
+  if (preWidth < newWidth) {
+    input.style.width = newWidth + 'px';
+  }
+  if (/=\d/.test(input.value) || /->[a-zA-Z]/.test(input.value)) {
+    input.classList.remove('comment');
+  } else {
+    input.classList.add('comment');
   }
 }
 
@@ -393,7 +373,7 @@ function recalculate_variable(variable) {
       let result = recalculation(input.value);
       if (result) {
         input.value = result;
-        adjust_width(input);
+        adjust_style(input);
         saveState();
       }
     }
@@ -422,7 +402,6 @@ function drop(event) {
   const y = event.clientY;
   dragElement.style.left = x + 'px';
   dragElement.style.top = y + 'px';
-  saveState();
 
   event.dataTransfer.clearData();
 }
@@ -435,6 +414,12 @@ function dragStart(event) {
 
 function dragEnd(event) {
   event.preventDefault();
+  const x = event.clientX - dragElement.offsetWidth / 2;
+  const y = event.clientY;
+  dragElement.style.left = x + 'px';
+  dragElement.style.top = y + 'px';
+  saveState();
+
   dragElement = null;
 }
 
