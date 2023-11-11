@@ -8,13 +8,21 @@ document.addEventListener('DOMContentLoaded', (event) => {
   loadState();
   bind_events();
   if (!getCookie("firsttime")) {
-    fetch('padcalc.json')
-      .then(response => response.json())
-      .then(data => importStateData(data));
     setCookie("firsttime", "true", 365 * 10); // Set cookie for 10 years
-    document.querySelectorAll('input.expression.comment')[1].focus();
+    fetch('https://padcalc.com/padcalc.json')
+      .then(response => response.json())
+      .then(data => importStateData(data))
+      .then(focusOnInput);
+  }
+
+  if (document.querySelectorAll('input.expression').length === 0) {
+    addTextInput(50, 70);
   }
 });
+
+function focusOnInput() {
+  document.querySelectorAll('input.expression.comment')[1].focus();
+}
 
 function addTextInput(x, y) {
   const input = document.createElement('input');
@@ -252,6 +260,7 @@ function importState(file) {
   reader.onload = function(event) {
     const stateData = JSON.parse(event.target.result);
     importStateData(stateData);
+    location.reload();
   };
   reader.readAsText(file);
 }
@@ -266,7 +275,6 @@ function importStateData(stateData) {
     pi: Math.PI,
     e: Math.E
   };
-  location.reload();
 }
 
 function add_listeners_to_input(input, x, y) {
