@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     fetch('padcalc.json')
       .then(response => response.json())
       .then(data => importStateData(data));
-    setCookie("firsttime", "true", 365 * 100); // Set cookie for 100 years
-    document.querySelectorAll('input.expression')[1].focus();
+    setCookie("firsttime", "true", 365 * 10); // Set cookie for 10 years
+    document.querySelectorAll('input.expression.comment')[1].focus();
   }
 });
 
@@ -295,7 +295,7 @@ function adjust_style(input) {
   if (preWidth < newWidth) {
     input.style.width = newWidth + 'px';
   }
-  if (/=\d/.test(input.value) || /->[a-zA-Z]/.test(input.value)) {
+  if (/=-?\d/.test(input.value) || /->[a-zA-Z]/.test(input.value)) {
     input.classList.remove('comment');
   } else {
     input.classList.add('comment');
@@ -535,5 +535,20 @@ function applyReplacements(expression) {
     return Math.max(...result);
   });
 
+  expression = expression.replace(/(-?\d+\.?\d*\s?\+\s?\d+\.?\d*\s?%)/g, function (match) {
+    let parts = match.match(/(-?\d+\.?\d*)\s?(\+\s?(\d+\.?\d*)?\s?%)/);
+    let base = parseFloat(parts[1]);
+    let percent = parseFloat(parts[3]);
+    let result = base + (base * percent / 100);
+    return result;
+  });
+
+  expression = expression.replace(/(-?\d+\.?\d*\s?-\s?\d+\.?\d*\s?%)/g, function (match) {
+    let parts = match.match(/(-?\d+\.?\d*)\s?(-\s?(\d+\.?\d*)?\s?%)/);
+    let base = parseFloat(parts[1]);
+    let percent = parseFloat(parts[3]);
+    let result = base - (base * percent / 100);
+    return result;
+  });
   return expression;
 }
