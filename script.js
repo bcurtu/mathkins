@@ -5,18 +5,19 @@ let reservedKeys = ["pi", "e", "sin", "cos", "tan", "sqrt", "log", "abs", "round
 let dragElement = null;
 
 document.addEventListener('DOMContentLoaded', (event) => {
-  loadState();
   bind_events();
   if (!getCookie("firsttime")) {
     setCookie("firsttime", "true", 365 * 10); // Set cookie for 10 years
     fetch('https://padcalc.com/padcalc.json')
       .then(response => response.json())
       .then(data => importStateData(data))
+      .then(loadState)
       .then(focusOnInput);
-  }
-
-  if (document.querySelectorAll('input.expression').length === 0) {
-    addTextInput(50, 70);
+  } else {
+    loadState();
+    if (document.querySelectorAll('input.expression').length === 0) {
+      addTextInput(50, 70);
+    }
   }
 });
 
