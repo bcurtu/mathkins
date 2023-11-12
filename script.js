@@ -3,6 +3,7 @@ let variables = {pi: Math.PI, e: Math.E};
 let assignedVariableNames = [];
 let reservedKeys = ["pi", "e", "sin", "cos", "tan", "sqrt", "log", "abs", "round", "random", "cbrt", "max", "min"];
 let dragElement = null;
+let lastKeyCode = null;
 
 document.addEventListener('DOMContentLoaded', (event) => {
   bind_events();
@@ -290,12 +291,25 @@ function importStateData(stateData) {
 }
 
 function add_listeners_to_input(input, x, y) {
+  input.addEventListener('keydown', function (event) {
+    lastKeyCode = event.keyCode;
+    if (lastKeyCode === 9) {
+      event.preventDefault();
+      return;
+    }
+  });
+
   input.addEventListener('keyup', function (event) {
-    if (event.key === '=' || event.key === 'Enter') {
+    if (lastKeyCode === 61 || event.key === '=' || event.key === 'Enter') {
       process_cmd(input);
       adjust_style(input);
+    } else if (lastKeyCode === 9) {
+      process_cmd(input);
+      adjust_style(input);
+      addTextInput(input.offsetLeft, input.offsetTop + 35);
     }
     adjust_width(input);
+    lastKeyCode = null;
   });
   input.addEventListener('dragstart', dragStart);
   input.addEventListener('dragend', dragEnd);
@@ -575,5 +589,10 @@ function applyReplacements(expression) {
     let result = base - (base * percent / 100);
     return result;
   });
+
+  expression = expression.replace(/--/g, function (match) {
+    return "+";
+  });
+
   return expression;
 }
