@@ -604,3 +604,12 @@ function applyReplacements(expression) {
 
   return expression;
 }
+
+function dragOverTrash(event) {
+  event.preventDefault();
+}
+
+function dropTrash(event) {
+  event.preventDefault();
+  dragElement.parentNode.removeChild(dragElement);
+}
