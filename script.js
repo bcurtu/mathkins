@@ -590,6 +590,14 @@ function applyReplacements(expression) {
     return result;
   });
 
+  expression = expression.replace(/(\d+\.?\d*%\s*\(.*\))/g, function (match) {
+    let parts = match.match(/(\d+\.?\d*)%\s*\((.*)\)/);
+    let percent = parseFloat(parts[1]);
+    let base = eval(parts[2]);
+    let result = base * percent / 100;
+    return result;
+  });
+
   expression = expression.replace(/--/g, function (match) {
     return "+";
   });
