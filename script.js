@@ -6,13 +6,8 @@ let dragElement = null;
 
 document.addEventListener('DOMContentLoaded', (event) => {
   bind_events();
-  if (!getCookie("firsttime")) {
-    setCookie("firsttime", "true", 365 * 10); // Set cookie for 10 years
-    fetch('https://padcalc.com/padcalc.json')
-      .then(response => response.json())
-      .then(data => importStateData(data))
-      .then(loadState)
-      .then(focusOnInput);
+  if (useCookies() && !getCookie("firsttime")) {
+    tutorial()
   } else {
     loadState();
     if (document.querySelectorAll('input.expression').length === 0) {
@@ -21,8 +16,19 @@ document.addEventListener('DOMContentLoaded', (event) => {
   }
 });
 
-function focusOnInput() {
-  document.querySelectorAll('input.expression.comment')[1].focus();
+function tutorial() {
+  setCookie("firsttime", "true", 365 * 10); // Set cookie for 10 years
+  fetch('https://padcalc.com/padcalc.json')
+    .then(response => response.json())
+    .then(data => importStateData(data))
+    .then(loadState)
+    .then(focusOnFirstOperation);
+}
+
+function focusOnFirstOperation() {
+  let input = document.querySelectorAll('input.expression.comment')[1];
+  input.classList.remove('comment');
+  input.focus();
 }
 
 function addTextInput(x, y) {
@@ -138,7 +144,12 @@ function displayVariables() {
     const variableValue = variables[variableName];
 
     const variableElement = document.createElement('p');
-    const value = eval(variableValue).toFixed(decimals);
+    let value = eval(variableValue);
+    if (Math.floor(value) === value) {
+      value = parseInt(value, 10);
+    } else {
+      value = eval(value).toFixed(decimals);
+    }
     variableElement.textContent = `${variableName}: ${value}`;
     if (assignedVariableNames.includes(variableName)) {
       variableElement.style.fontStyle = 'italic';
@@ -446,6 +457,11 @@ function getCookie(cname) {
     }
   }
   return "";
+}
+
+function useCookies() {
+  setCookie("test", "test");
+  return uses = getCookie("test") == "test"
 }
 
 function setCookie(cname, cvalue, exdays) {

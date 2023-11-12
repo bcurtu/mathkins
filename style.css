@@ -9,7 +9,7 @@ html {
 }
 
 h3 {
-  font-family: Arial;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 canvas {
@@ -36,7 +36,7 @@ input.expression {
 }
 
 input.comment {
-  font: 24px Arial;
+  font: 24px Arial, Helvetica, sans-serif;
 }
 
 input.addvar {
