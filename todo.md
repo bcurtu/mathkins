@@ -10,3 +10,7 @@
 * tutorial, chain enter events
 
 * Example sheet
+
+* Papelera
+
+* Drag and drop

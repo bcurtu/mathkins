@@ -59,3 +59,19 @@ input.setdecimals {
   width: 10%;
   font: 14px Courier;
 }
+
+@media print {
+  /* Oculta todos los elementos */
+  body * {
+    visibility: hidden;
+  }
+
+  canvas {
+    visibility: hidden;
+  }
+
+  /* Posiciona el canvas y los inputs en la parte superior de la página */
+  input.expression {
+    visibility: visible;
+  }
+}

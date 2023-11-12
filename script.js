@@ -94,7 +94,7 @@ function recalculation(operations_chain) {
   const parts = operations_chain.split('=');
   for(let i = 0; i < parts.length; i++) {
     let left = parts[i]
-    const assignmentMatch = left.match(/=?(-?\d+\.?\d*)->([a-zA-Z]+[a-zA-Z0-9_]*)$/);
+    const assignmentMatch = left.match(/=?(-?\d+\.?\d*)\s*->([a-zA-Z]+[a-zA-Z0-9_]*)$/);
     if (assignmentMatch) {
       assignment(assignmentMatch[1], assignmentMatch[2].trim());
       break;
