@@ -11,6 +11,4 @@
 
 * Example sheet
 
-* Papelera
-
 * Drag and drop
