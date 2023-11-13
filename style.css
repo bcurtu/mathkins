@@ -5,12 +5,28 @@ html {
   display: flex;
 }
 
+h3 {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+p {
+  font: 14px Courier;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.left-column {
+  flex: 0 0 80%;
+}
+
 .footer {
   text-align: center;
 }
 
-h3 {
-  font-family: Arial, Helvetica, sans-serif;
+.pad {
+  position: relative;
+  width: 100%;
+  height: 95%;
 }
 
 canvas {
@@ -21,13 +37,12 @@ canvas {
   background: url("cuadriculado-min.jpeg");
 }
 
-.left-column {
-  flex: 0 0 80%;
-}
-
-.right-column {
-  flex: 1;
-  margin-left: 20px;
+#trash {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 10px;
+  height: 50px;
 }
 
 input.expression {
@@ -41,19 +56,23 @@ input.comment {
   font: 24px Arial, Helvetica, sans-serif;
 }
 
+.right-column {
+  flex: 1;
+  margin-left: 20px;
+  margin-right: 10px;
+}
+
 input.addvar {
   width: 45%;
   font: 14px Courier;
 }
 
 .variablesContainer {
-  height: 39%;
+  height: auto;
 }
 
-p {
-  font: 14px Courier;
-  margin-bottom: 5px;
-  margin-top: 5px;
+.variablesFooter {
+  margin-top: 15px;
 }
 
 input.setdecimals {
@@ -61,35 +80,35 @@ input.setdecimals {
   font: 14px Courier;
 }
 
-.pad {
-  position: relative;
-  width: 100%;
-  height: 95%;
-}
-
-#trash {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  padding: 10px;
-  height: 50px;
-}
-
 @media screen and (max-width: 600px) {
+  body {
+    flex-direction: column;
+  }
+
   /* Escala el tamaño de la fuente del input */
   input.expression {
     font-size: 1.5em;
     /* Ajusta este valor según tus necesidades */
   }
 
+  .left-column {
+    flex: 0 0 80%;
+  }
   /* Muestra la columna derecha debajo del canvas */
   .right-column {
     flex-direction: column;
   }
 
-  /* Oculta el div de hints */
-  .hints {
-    display: none;
+  .pad {
+    width: 99%;
+  }
+
+  input.addvar {
+    width: 30%;
+  }
+
+  .variablesContainer {
+    height: auto;
   }
 }
 
