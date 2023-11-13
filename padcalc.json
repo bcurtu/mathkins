@@ -1,63 +1,58 @@
 {
   "inputs": [
     {
-      "value": "Write your operations in the pad and press Enter",
+      "value": "Write operations and press Enter",
       "top": "39px",
-      "left": "70px"
+      "left": "20px"
     },
     {
-      "value": "24/2*(5+7)=",
+      "value": "8/2*(5+7)=",
       "top": "89px",
-      "left": "110px"
+      "left": "35px"
     },
     {
-      "value": "Concatenate results and operations",
+      "value": "Concatenate operations",
       "top": "157px",
-      "left": "70px"
+      "left": "20px"
     },
     {
-      "value": "24/2*(5+7)=144*16=2304",
+      "value": "8/2*(5+7)=48*4=192",
       "top": "207px",
-      "left": "110px"
+      "left": "35px"
     },
     {
       "value": "Save results in variables",
       "top": "270px",
-      "left": "70px"
+      "left": "20px"
     },
     {
-      "value": "24/2*(5+7)=144*16=2304->foo",
-      "top": "321px",
-      "left": "110px"
+      "value": "8/2*(5+7)=48*4=192->foo",
+      "top": "320px",
+      "left": "35px"
     },
     {
-      "value": "Use you variables in your calculations",
+      "value": "Use the variables",
       "top": "391px",
-      "left": "70px"
+      "left": "20px"
     },
     {
-      "value": "foo/12=192",
-      "top": "437px",
-      "left": "110px"
+      "value": "foo/12+bar=25",
+      "top": "441px",
+      "left": "35px"
     },
     {
-      "value": "Update variables in the right column to recalculate the values",
-      "top": "491px",
-      "left": "70px"
+      "value": "Update variables to recalculate",
+      "top": "511px",
+      "left": "20px"
     },
     {
-      "value": "foo+bar=2313",
-      "top": "533px",
-      "left": "110px"
-    },
-    {
-      "value": "Press the Reset button and start your calcs",
-      "top": "680px",
-      "left": "264px"
+      "value": "Press Reset button",
+      "top": "600px",
+      "left": "20px"
     }
   ],
   "variables": {
-    "foo": "2304",
+    "foo": "192",
     "bar": 9
   },
   "assignedVariableNames": [
