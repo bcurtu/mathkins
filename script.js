@@ -3,7 +3,6 @@ let variables = {pi: Math.PI, e: Math.E};
 let assignedVariableNames = [];
 let reservedKeys = ["pi", "e", "sin", "cos", "tan", "sqrt", "log", "abs", "round", "random", "cbrt", "max", "min"];
 let dragElement = null;
-let lastKeyCode = null;
 let lastKey = null;
 
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -293,27 +292,24 @@ function importStateData(stateData) {
 
 function add_listeners_to_input(input) {
   input.addEventListener('keydown', function (event) {
-    lastKeyCode = event.keyCode;
     lastKey = event.key;
-    if (lastKeyCode === 9 || lastKeyCode === 13 || lastKey === 'Enter' || lastKey === 'Tab') {
+    if (lastKey === 'Enter' || lastKey === 'Tab') {
       event.preventDefault();
       return;
     }
   });
 
   input.addEventListener('keyup', function (event) {
-    if (lastKeyCode === 61 || lastKeyCode === 13 ||
-      lastKey === '=' || lastKey === 'Enter'  ||
-      event.key === '=' || event.key === 'Enter') {
+    if (lastKey === '=' || lastKey === 'Enter'  ||
+        event.key === '=' || event.key === 'Enter') {
       process_cmd(input);
       adjust_style(input);
-    } else if (lastKeyCode === 9 || lastKey === 'Tab' || event.key === 'Tab') {
+    } else if (lastKey === 'Tab' || event.key === 'Tab') {
       process_cmd(input);
       adjust_style(input);
       addTextInput(input.offsetLeft, input.offsetTop + 35);
     }
     adjust_width(input);
-    lastKeyCode = null;
     lastKey = null;
   });
   input.addEventListener('dragstart', dragStart);
