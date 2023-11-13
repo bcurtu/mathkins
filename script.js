@@ -300,7 +300,7 @@ function add_listeners_to_input(input, x, y) {
   });
 
   input.addEventListener('keyup', function (event) {
-    if (lastKeyCode === 61 || event.key === '=' || event.key === 'Enter') {
+    if (lastKeyCode === 61 || lastKeyCode === 13 || event.key === '=' || event.key === 'Enter') {
       process_cmd(input);
       adjust_style(input);
     } else if (lastKeyCode === 9) {
