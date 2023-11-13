@@ -2,6 +2,7 @@ body,
 html {
   height: 100%;
   margin: 0;
+  display: flex;
 }
 
 .footer {
@@ -45,7 +46,7 @@ input.addvar {
   font: 14px Courier;
 }
 
-#variablesContainer {
+.variablesContainer {
   height: 39%;
 }
 
@@ -72,6 +73,24 @@ input.setdecimals {
   right: 0;
   padding: 10px;
   height: 50px;
+}
+
+@media screen and (max-width: 600px) {
+  /* Escala el tamaño de la fuente del input */
+  input.expression {
+    font-size: 1.5em;
+    /* Ajusta este valor según tus necesidades */
+  }
+
+  /* Muestra la columna derecha debajo del canvas */
+  .right-column {
+    flex-direction: column;
+  }
+
+  /* Oculta el div de hints */
+  .hints {
+    display: none;
+  }
 }
 
 @media print {

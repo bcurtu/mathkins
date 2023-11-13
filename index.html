@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="style.css">
   <script src="script.js"></script>
 </head>
-<body style="display: flex;">
+<body>
   <div class="left-column">
     <div class="pad">
       <canvas id="myCanvas" ondragover="dragOver(event)" ondrop="drop(event)"></canvas>
@@ -33,34 +33,40 @@
   </div>
 
   <div class="right-column">
-    <h3>Variables</h3>
-    <input id="newVariableInput" class="addvar" type="text" placeholder="v: 12">
-    <button onclick="addVariable();">Add Variable</button>
-    <div id="variablesContainer"></div>
-    <button onclick="reset();">Reset</button>
-    <button onclick="exportState();">Export</button>
-    <button onclick="importFile();">Import</button>
-    <hr>
+    <div class="variablesHeader">
+      <h3>Variables</h3>
+      <input id="newVariableInput" class="addvar" type="text" placeholder="v: 12">
+      <button onclick="addVariable();">Add Variable</button>
+    </div>
+    <div class="variablesContainer" id="variablesContainer"></div>
+    <div class="variablesFooter">
+      <button onclick="reset();">Reset</button>
+      <button onclick="exportState();">Export</button>
+      <button onclick="importFile();">Import</button>
+    </div>
     <div class="config">
+      <hr>
       <h3>Configuration</h3>
       <p>
         Decimals: <input type="number" value="2" id="decimals" class="setdecimals">
         <button onclick="setDecimals();">set</button>
       </p>
+      <hr>
     </div>
-    <hr>
-    <h3>Hints</h3>
     <div class="hints">
-      <p>3*5+9/5=16.80</p>
-      <p>43%5=3 (modulus)</p>
-      <p>2**3=8 (power)</p>
-      <p>8-2=6->x (assignation)</p>
-      <p>x*4=24->y</p>
-      <p>x+y=30 (with variables)</p>
-      <p>sqrt(49)=7 (square root)</p>
-      <p>60+50%=90</p>
-      <p>25%(50)=12.50</p>
-      <p><a href="faqs.html">See more</a></p>
+      <h3>Hints</h3>
+      <div class="hints">
+        <p>3*5+9/5=16.80</p>
+        <p>43%5=3 (modulus)</p>
+        <p>2**3=8 (power)</p>
+        <p>8-2=6->x (assignation)</p>
+        <p>x*4=24->y</p>
+        <p>x+y=30 (with variables)</p>
+        <p>sqrt(49)=7 (square root)</p>
+        <p>60+50%=90</p>
+        <p>25%(50)=12.50</p>
+        <p><a href="faqs.html">See more</a></p>
+      </div>
     </div>
   </div>
 
