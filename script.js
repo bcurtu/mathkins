@@ -314,6 +314,7 @@ function add_listeners_to_input(input) {
     }
     adjust_width(input);
     lastKeyCode = null;
+    lastKey = null;
   });
   input.addEventListener('dragstart', dragStart);
   input.addEventListener('dragend', dragEnd);
