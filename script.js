@@ -293,7 +293,7 @@ function importStateData(stateData) {
 function add_listeners_to_input(input, x, y) {
   input.addEventListener('keydown', function (event) {
     lastKeyCode = event.keyCode;
-    if (lastKeyCode === 9) {
+    if (lastKeyCode === 9 || lastKeyCode === 13) {
       event.preventDefault();
       return;
     }
