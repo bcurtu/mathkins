@@ -34,19 +34,14 @@ function focusOnFirstOperation() {
 
 function addTextInput(x, y) {
   const input = document.createElement('input');
+  add_listeners_to_input(input);
   input.style.position = 'absolute';
   input.style.left = x + 'px';
   input.style.top = y + 'px';
   input.classList.add('expression');
   input.draggable = "true";
-  add_listeners_to_input(input);
   document.body.appendChild(input);
   input.focus();
-  input.addEventListener('focusout', function () {
-    if (input.value.trim() === '') {
-      document.body.removeChild(input);
-    }
-  });
 }
 
 function process_cmd(input) {
@@ -229,13 +224,13 @@ function loadState() {
 
   inputs.forEach(inputData => {
     const input = document.createElement('input');
+    add_listeners_to_input(input);
     input.value = inputData.value;
     input.style.position = 'absolute'; // Position the input absolutely
     input.style.top = inputData.top;
     input.style.left = inputData.left;
     input.classList.add('expression');
     input.draggable = "true";
-    add_listeners_to_input(input);
     adjust_style(input);
 
     document.body.appendChild(input);
@@ -314,6 +309,13 @@ function add_listeners_to_input(input) {
     adjust_width(input);
     lastKey = null;
   });
+
+  input.addEventListener('focusout', function () {
+    if (input.value.trim() === '') {
+      document.body.removeChild(input);
+    }
+  });
+
   input.addEventListener('dragstart', dragStart);
   input.addEventListener('dragend', dragEnd);
 }
