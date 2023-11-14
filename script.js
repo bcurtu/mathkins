@@ -310,20 +310,19 @@ function add_listeners_to_input(input) {
     lastKey = null;
   });
 
-  input.addEventListener('focusout', function () {
+  input.addEventListener('focusout', function (event) {
     if (input.value.trim() === '') {
       document.body.removeChild(input);
-    } else {
-      let keepfocus = false;
-      if (input.value.endsWith('=')) {
-        keepfocus = true;
-      }
+      return;
+    }
+    const keepfocus = input.value.endsWith('=');
+    document.getElementById("log").appendChild(document.createTextNode("focusout=" + keepfocus));
+    if (keepfocus) {
+      event.preventDefault();
       process_cmd(input);
       adjust_style(input);
-      if (keepfocus) {
-        event.preventDefault();
-        input.focus();
-      };
+      adjust_width(input);
+      input.focus();
     }
   });
 
