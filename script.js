@@ -315,17 +315,20 @@ function add_listeners_to_input(input) {
       document.body.removeChild(input);
       return;
     }
-    const keepfocus = input.value.endsWith('=');
-    document.getElementById("log").appendChild(document.createTextNode("focusout=" + keepfocus));
-    if (keepfocus) {
-      event.preventDefault();
+    if (input.value.endsWith('=')) {
       process_cmd(input);
       adjust_style(input);
       adjust_width(input);
-      input.focus();
     }
   });
 
+  input.addEventListener('input', function (event) {
+    if (input.value.endsWith('=')) {
+      process_cmd(input);
+      adjust_style(input);
+      adjust_width(input);
+    }
+  });
   input.addEventListener('dragstart', dragStart);
   input.addEventListener('dragend', dragEnd);
 }
