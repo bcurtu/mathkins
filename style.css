@@ -54,6 +54,7 @@ input.expression {
 
 input.comment {
   font: 24px Arial, Helvetica, sans-serif;
+  background-color: transparent;
 }
 
 .right-column {

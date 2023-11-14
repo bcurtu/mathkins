@@ -1,12 +1,12 @@
 {
   "inputs": [
     {
-      "value": "Write operations and press Enter",
+      "value": "Write = after your operations",
       "top": "39px",
       "left": "20px"
     },
     {
-      "value": "8/2*(5+7)=",
+      "value": "8/2*(5+7)",
       "top": "89px",
       "left": "35px"
     },
@@ -21,7 +21,7 @@
       "left": "35px"
     },
     {
-      "value": "Save results in variables",
+      "value": "Add variables with -> or in the menu",
       "top": "270px",
       "left": "20px"
     },
@@ -31,23 +31,18 @@
       "left": "35px"
     },
     {
-      "value": "Use the variables",
-      "top": "391px",
+      "value": "Use and update the variables",
+      "top": "390px",
       "left": "20px"
     },
     {
       "value": "foo/12+bar=25",
-      "top": "441px",
+      "top": "440px",
       "left": "35px"
     },
     {
-      "value": "Update variables to recalculate",
-      "top": "511px",
-      "left": "20px"
-    },
-    {
-      "value": "Press Reset button",
-      "top": "600px",
+      "value": "Press Reset button to start",
+      "top": "495px",
       "left": "20px"
     }
   ],

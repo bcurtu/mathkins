@@ -335,23 +335,24 @@ function add_listeners_to_input(input) {
 
 function adjust_width(input) {
   const preWidth = input.offsetWidth;
-  const newWidth = ((input.value.length + 1) * 16);
+  let newWidth;
+  if (input.classList.contains('comment')) {
+    newWidth = ((input.value.length + 1) * 12);
+  } else {
+    newWidth = ((input.value.length + 1) * 14);
+  }
   if (preWidth < newWidth) {
     input.style.width = newWidth + 'px';
   }
 }
 
 function adjust_style(input) {
-  const preWidth = input.offsetWidth;
-  const newWidth = ((input.value.length + 1) * 16);
-  if (preWidth < newWidth) {
-    input.style.width = newWidth + 'px';
-  }
   if (/=-?\d/.test(input.value) || /->[a-zA-Z]/.test(input.value)) {
     input.classList.remove('comment');
   } else {
     input.classList.add('comment');
   }
+  adjust_width(input);
 }
 
 function reset() {
