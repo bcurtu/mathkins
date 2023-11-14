@@ -50,11 +50,11 @@ function process_cmd(input) {
   let result;
   if (value.endsWith('=')) {
     result = calculate(value);
-    if (result) result = `${value}${result}`;
+    if (result != undefined) result = `${value}${result}`;
   } else {
     result = recalculation(value);
   }
-  if (result) {
+  if (result != undefined) {
     input.value = `${result}`;
     adjust_style(input);
     saveState();
