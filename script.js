@@ -313,6 +313,17 @@ function add_listeners_to_input(input) {
   input.addEventListener('focusout', function () {
     if (input.value.trim() === '') {
       document.body.removeChild(input);
+    } else {
+      let keepfocus = false;
+      if (input.value.endsWith('=')) {
+        keepfocus = true;
+      }
+      process_cmd(input);
+      adjust_style(input);
+      if (keepfocus) {
+        event.preventDefault();
+        input.focus();
+      };
     }
   });
 
