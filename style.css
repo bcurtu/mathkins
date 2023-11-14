@@ -80,6 +80,10 @@ input.setdecimals {
   font: 14px Courier;
 }
 
+.log {
+  display: none;
+}
+
 @media screen and (max-width: 600px) {
   body {
     flex-direction: column;
@@ -109,6 +113,10 @@ input.setdecimals {
 
   .variablesContainer {
     height: auto;
+  }
+
+  .log {
+    display: block;
   }
 }
 

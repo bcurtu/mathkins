@@ -293,6 +293,7 @@ function importStateData(stateData) {
 function add_listeners_to_input(input) {
   input.addEventListener('keydown', function (event) {
     lastKey = event.key;
+    document.getElementById("log").appendChild(document.createTextNode(" * KeyDown=" + event.key));
     if (lastKey === 'Enter' || lastKey === 'Tab') {
       event.preventDefault();
       return;
@@ -300,6 +301,7 @@ function add_listeners_to_input(input) {
   });
 
   input.addEventListener('keyup', function (event) {
+    document.getElementById("log").appendChild(document.createTextNode(" * KeyUp=" + event.key));
     if (lastKey === '=' || lastKey === 'Enter'  ||
         event.key === '=' || event.key === 'Enter') {
       process_cmd(input);
