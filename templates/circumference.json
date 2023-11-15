@@ -2,6 +2,6 @@
   "description": "The length of the circumference of a circle is 2πr.",
   "formula": "2*pi*r=",
   "variables": [
-    "r: 1",
+    "r: 1"
   ]
 }
