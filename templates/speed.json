@@ -1,0 +1,8 @@
+{
+  "description": "The speed is the distance traveled per unit of time.",
+  "formula": "d/t=",
+  "variables": [
+    "d: 100",
+    "t: 60"
+  ]
+}

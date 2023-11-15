@@ -1,5 +1,6 @@
 body,
 html {
+  font-family: Arial, Helvetica, sans-serif;
   height: 100%;
   margin: 0;
   display: flex;
@@ -85,6 +86,35 @@ input.setdecimals {
   display: none;
 }
 
+.docs {
+  margin: 20px;
+}
+
+.docs .title {
+  margin-bottom: 20px;
+}
+
+.docs .faq {
+  margin-bottom: 20px;
+}
+
+.docs .question {
+  font-weight: bold;
+}
+
+.docs .answer {
+  margin-top: 5px;
+  line-height: 1.2em;
+}
+
+.docs .code {
+  font-family: Courier, monospace;
+}
+
+.docs .footer {
+  padding-bottom: 10px;
+}
+
 @media screen and (max-width: 600px) {
   body {
     flex-direction: column;
@@ -99,6 +129,7 @@ input.setdecimals {
   .left-column {
     flex: 0 0 80%;
   }
+
   /* Muestra la columna derecha debajo del canvas */
   .right-column {
     flex-direction: column;

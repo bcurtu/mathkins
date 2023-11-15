@@ -9,90 +9,88 @@
   <meta name="description"
     content="A calculator on a Note Pad. You can write your calculations, concatenate operations and save the results in variables, to use them later in following operations.">
   <meta name="author" content="Bosco Curtu Massé">
-  <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      margin: 20px;
-    }
-
-    .title {
-      margin-bottom: 20px;
-    }
-
-    .faq {
-      margin-bottom: 20px;
-    }
-
-    .question {
-      font-weight: bold;
-    }
-
-    .answer {
-      margin-top: 5px;
-      line-height: 1.2em;
-    }
-
-    .code {
-      font-family: Courier, monospace;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <div class="title">
-    <h1>PadCalc FAQs</h1>
-    <a href="index.html"><img src="logo-pad-calc-white-min.png" alt="logo" width="100px" height="100px"></a>
-  </div>
+  <div class="docs">
+    <div class="title">
+      <h1>PadCalc FAQs</h1>
+      <a href="index.html"><img src="logo-pad-calc-white-min.png" alt="logo" width="100px" height="100px"></a>
+    </div>
 
-  <div class="faq">
-    <div class="question">1. What is PadCalc?</div>
-    <div class="answer">PadCalc is a calculator embedded within a notepad. It allows you to write operations, and the pad will calculate the results for you. You can chain operations and save the results in variables for use in other calculations.</div>
-    <div class="answer">To use it just click anywhere in the pad and start writing your operations. You can use the '<span class="code">=</span>' symbol or the '<span class="code">Enter</span>' key to calculate the result of an operation. Also, you can use the '<span class="code">Tab</span>' key to add a new line.</div>
-    <div class="answer">Of course, you can also write text, so you can organize your calculations in sections, add comments, etc.</div>
-  </div>
+    <div class="faq">
+      <div class="question">1. What is PadCalc?</div>
+      <div class="answer">PadCalc is a calculator embedded within a notepad. It allows you to write operations, and the pad will calculate the results for you. You can chain operations and save the results in variables for use in other calculations.</div>
+      <div class="answer">To use it just click anywhere in the pad and start writing your operations. You can use the '<span class="code">=</span>' symbol or the '<span class="code">Enter</span>' key to calculate the result of an operation. Also, you can use the '<span class="code">Tab</span>' key to add a new line.</div>
+      <div class="answer">Of course, you can also write text, so you can organize your calculations in sections, add comments, etc.</div>
+    </div>
 
-  <div class="faq">
-    <div class="question">2. What operations are supported?</div>
-    <div class="answer">PadCalc supports basic operatiors: addition (<span class="code">+</span>), subtraction (<span class="code">-</span>), multiplication (<span class="code">*</span>), division (<span class="code">/</span>), modulus (<span class="code">8%3=2</span>), and power (<span class="code">2**4=16</span>) operations. Also, it understands parenthesis and the order of operations: <span class="code">12/(6+6)=1</span>.</div>
-    <div class="answer">It can add and substrac percentages: <span class="code">40+50%=60</span>.</div>
-    <div class="answer">It can use complex functions like <span class="code">sin, cos, tan, log, exp, sqrt, abs, round, random</span> and <span class="code">cbrt</span>. For example: <span class="code">sin(abs(-3))=0.14</span>.
-      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math">Find here the explanation of these functions</a>. Disclaimer, not all the funcions of the Math library are supported.</div>
-    <div class="answer">Also, it can work with ranges: <span class="code">max</span> and <span class="code">min</span>. For instance: <span class="code">max([4,1,2,1])=4</span>. You can use variables in your ranges.</div>
-    <div class="answer">Finally, you can use <span class="code">pi</span> and <span class="code">e</span> constants</div>
-  </div>
+    <div class="faq">
+      <div class="question">2. What operations are supported?</div>
+      <div class="answer">PadCalc supports basic operatiors: addition (<span class="code">+</span>), subtraction (<span class="code">-</span>), multiplication (<span class="code">*</span>), division (<span class="code">/</span>), modulus (<span class="code">8%3=2</span>), and power (<span class="code">2**4=16</span>) operations. Also, it understands parenthesis and the order of operations: <span class="code">12/(6+6)=1</span>.</div>
+      <div class="answer">It can add and substrac percentages: <span class="code">40+50%=60</span>.</div>
+      <div class="answer">It can use complex functions like <span class="code">sin, cos, tan, log, exp, sqrt, abs, round, random</span> and <span class="code">cbrt</span>. For example: <span class="code">sin(abs(-3))=0.14</span>.
+        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math">Find here the explanation of these functions</a>. Disclaimer, not all the funcions of the Math library are supported.</div>
+      <div class="answer">Also, it can work with ranges: <span class="code">max</span> and <span class="code">min</span>. For instance: <span class="code">max([4,1,2,1])=4</span>. You can use variables in your ranges.</div>
+      <div class="answer">Finally, you can use <span class="code">pi</span> and <span class="code">e</span> constants</div>
+    </div>
 
+    <div class="faq">
+      <div class="question">3. How can I create variables?</div>
+      <div class="answer">You can add variables in the left column using the '<span class="code">Add Variable</span>' button, or use the results of your operations with the <span class="code">-></span> symbol.<br/>For example: <span class="code">2+3=5->var</span></div>
+      <div class="answer">There are some reserved variable names that you cannot use: <span class="code">e, pi, max, min, sin, cos, tan, log, exp, sqrt, abs, round, random</span> and <span class="code">cbrt</span>.</div>
+    </div>
 
-  <div class="faq">
-    <div class="question">3. How can I create variables?</div>
-    <div class="answer">You can add variables in the left column using the '<span class="code">Add Variable</span>' button, or use the results of your operations with the <span class="code">-></span> symbol.<br/>For example: <span class="code">2+3=5->var</span></div>
-    <div class="answer">There are some reserved variable names that you cannot use: <span class="code">e, pi, max, min, sin, cos, tan, log, exp, sqrt, abs, round, random</span> and <span class="code">cbrt</span>.</div>
-  </div>
+    <div class="faq">
+      <div class="question">4. What characters are allowed in variable names?</div>
+      <div class="answer">Variable names must start with letters and can contain letters, numbers, or underscores. For example: <span class="code">var_1</span>.</div>
+    </div>
 
-  <div class="faq">
-    <div class="question">4. What characters are allowed in variable names?</div>
-    <div class="answer">Variable names must start with letters and can contain letters, numbers, or underscores. For example: <span class="code">var_1</span>.</div>
-  </div>
+    <div class="faq">
+      <div class="question">5. What are the templates and how can I use them?</div>
+      <div class="answer">Templates are predefined formulas that you can quickly introduce in your pad. You can use them by writing in the pad <span class="code">@template_name=</span>.
+      </div>
+      <div class="answer">Available templates are:
+        <ul>
+          <li class="code">@triangle_area</li>
+          <li class="code">@circle_area</li>
+          <li class="code">@circumference</li>
+          <li class="code">@hypotenuse</li>
+          <li class="code">@speed</li>
+          <li class="code">@farenheit</li>
+        </ul>
+      </div>
+    </div>
 
-  <div class="faq">
-    <div class="question">5. Can I save and restore my notes?</div>
-    <div class="answer">Yes, there is an '<span class="code">Export</span>' button that allows you to download a JSON file with the data.<br/>Then, you can use the '<span class="code">Import</span>' button to upload this file or another containing PadCalc data.
+    <div class="faq">
+      <div class="question">6. Can I save and restore my notes?</div>
+      <div class="answer">Yes, there is an '<span class="code">Export</span>' button that allows you to download a JSON file with the data.<br/>Then, you can use the '<span class="code">Import</span>' button to upload this file or another containing PadCalc data.
+      </div>
+    </div>
+
+    <div class="faq">
+      <div class="question">7. How can I share my calculations with someone else?</div>
+      <div class="answer">You can send the exported file by email, slack, whatsapp...</div>
+    </div>
+
+    <div class="faq">
+      <div class="question">8. Do you store or sell my data to others?</div>
+      <div class="answer">No, this application runs only in your browser. There isn't any database or application server behind it.</div>
+    </div>
+
+    <div class="faq">
+      <div class="question">9. Do you want feedback? How can I contact you?</div>
+      <div class="answer">Please, I want your feedback, good or bad, bugs, feature requests... E-mail me to <a href="mailto:bcurtu+padcalc@gmail.com">bcurtu+padcalc@gmail.com</a>.</div>
+    </div>
+
+    <div class="footer">
+      <p>
+        Your convenient calculator on a note pad.
+        &copy; 2023 <a href="mailto:bcurtu+padcalc@gmail.com">bcurtu@gmail.com</a>
+        - <a href="index.html">PadCalc</a>
+      </p>
     </div>
   </div>
-
-  <div class="faq">
-    <div class="question">6. How can I share my calculations with someone else?</div>
-    <div class="answer">You can send the exported file by email, slack, whatsapp...</div>
-  </div>
-
-  <div class="faq">
-    <div class="question">7. Do you store or sell my data to others?</div>
-    <div class="answer">No, this application runs only in your browser. There isn't any database or application server behind it.</div>
-  </div>
-
-  <div class="faq">
-    <div class="question">8. Do you have feedback? How can I contact you?</div>
-    <div class="answer">Please, I want your feedback, good or bad, bugs, feature requests... E-mail me to <a href="mailto:bcurtu+padcalc@gmail.com">bcurtu+padcalc@gmail.com</a>.</div>
-  </div>
 </body>
-
 </html>

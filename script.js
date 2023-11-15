@@ -49,7 +49,7 @@ function process_cmd(input) {
 
   let result;
   if (value.endsWith('=')) {
-    if (/^@[a-zA-Z]+[a-zA-Z0-9_]*/.test(value)) {
+    if (/^@\s?[a-zA-Z]+[a-zA-Z0-9_]*/.test(value)) {
       applyTemplate(input);
       return;
     } else {
@@ -639,7 +639,7 @@ function dropTrash(event) {
 }
 
 function applyTemplate(input) {
-  const template_name = input.value.match(/@([a-zA-Z]+[a-zA-Z0-9_]*)\s*=$/)[1];
+  const template_name = input.value.match(/@\s?([a-zA-Z]+[a-zA-Z0-9_]*)\s*=$/)[1];
   fetch(`https://padcalc.com/templates/${template_name.toLowerCase()}.json`)
     .then(response => response.json())
     .then(data => applyTemplateFromJson(input, data));
