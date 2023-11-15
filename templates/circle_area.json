@@ -1,0 +1,7 @@
+{
+  "description": "The area of a circle is pi times the radius squared.",
+  "formula": "pi*r**2=",
+  "variables": [
+    "r: 1"
+  ]
+}

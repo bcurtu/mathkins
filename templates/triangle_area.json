@@ -1,0 +1,8 @@
+{
+  "description": "The area of a triangle is half the base times the height.",
+  "formula": "b*h/2=",
+  "variables": [
+    "b: 1",
+    "h: 2"
+  ]
+}

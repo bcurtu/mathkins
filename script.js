@@ -49,8 +49,12 @@ function process_cmd(input) {
 
   let result;
   if (value.endsWith('=')) {
-    result = calculate(value);
-    if (result != undefined) result = `${value}${result}`;
+    if (/^@[a-zA-Z]+[a-zA-Z0-9_]*/.test(value)) {
+      result = applyTemplate(value);
+    } else {
+      result = calculate(value);
+      if (result != undefined) result = `${value}${result}`;
+    }
   } else {
     result = recalculation(value);
   }
@@ -339,7 +343,7 @@ function adjust_width(input) {
   if (input.classList.contains('comment')) {
     newWidth = ((input.value.length + 1) * 12);
   } else {
-    newWidth = ((input.value.length + 1) * 14);
+    newWidth = ((input.value.length + 1) * 16);
   }
   if (preWidth < newWidth) {
     input.style.width = newWidth + 'px';
@@ -631,4 +635,13 @@ function dragOverTrash(event) {
 function dropTrash(event) {
   event.preventDefault();
   dragElement.parentNode.removeChild(dragElement);
+}
+
+function applyTemplate(value) {
+  const template_name = value.match(/@([a-zA-Z]+[a-zA-Z0-9_]*)\s*=$/)[1];
+  fetch(`templates/${template_name}.json`)
+  .then(response => response.json())
+  .then(templateData => {
+    return templateData.formula;
+  });
 }
