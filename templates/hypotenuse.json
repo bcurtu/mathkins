@@ -1,0 +1,8 @@
+{
+  "description": "The hypotenuse's length is the square root of the sum of the squares of the other two sides.",
+  "formula": "sqrt(c1**2+c2**2)=",
+  "variables": [
+    "c1: 3",
+    "c2: 4"
+  ]
+}

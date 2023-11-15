@@ -50,7 +50,8 @@ function process_cmd(input) {
   let result;
   if (value.endsWith('=')) {
     if (/^@[a-zA-Z]+[a-zA-Z0-9_]*/.test(value)) {
-      result = applyTemplate(value);
+      applyTemplate(input);
+      return;
     } else {
       result = calculate(value);
       if (result != undefined) result = `${value}${result}`;
@@ -162,7 +163,7 @@ function displayVariables() {
 
 function addVariable() {
   const newVariableInput = document.getElementById('newVariableInput');
-  const variableMatch = newVariableInput.value.match(/([a-zA-Z]+[a-zA-Z0-9_]*):\s*(-?\d+\.?\d*)$/);
+  const variableMatch = newVariableInput.value.match(/([a-zA-Z]+[a-zA-Z0-9_]*)\s*[=|:]\s*(-?\d+\.?\d*)$/);
 
   if (variableMatch) {
     const variableName = variableMatch[1];
@@ -637,11 +638,19 @@ function dropTrash(event) {
   dragElement.parentNode.removeChild(dragElement);
 }
 
-function applyTemplate(value) {
-  const template_name = value.match(/@([a-zA-Z]+[a-zA-Z0-9_]*)\s*=$/)[1];
-  fetch(`templates/${template_name}.json`)
-  .then(response => response.json())
-  .then(templateData => {
-    return templateData.formula;
+function applyTemplate(input) {
+  const template_name = input.value.match(/@([a-zA-Z]+[a-zA-Z0-9_]*)\s*=$/)[1];
+  fetch(`https://padcalc.com/templates/${template_name.toLowerCase()}.json`)
+    .then(response => response.json())
+    .then(data => applyTemplateFromJson(input, data));
+}
+
+function applyTemplateFromJson(input, data) {
+  data.variables.forEach(variable => {
+    let [key, value] = variable.split(':');
+    variables[key.trim()] ||= Number(value);
   });
+  input.value = data.formula;
+  displayVariables();
+  process_cmd(input);
 }
