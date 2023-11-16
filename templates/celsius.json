@@ -1,0 +1,7 @@
+{
+  "description": "It transforms the temperature from Fahrenheit to Celsius.",
+  "formula": "(F-32)*5/9=",
+  "variables": [
+    "T: 54"
+  ]
+}
