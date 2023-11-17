@@ -94,9 +94,9 @@ function recalculation(operations_chain) {
   const parts = operations_chain.split('=');
   for(let i = 0; i < parts.length; i++) {
     let left = parts[i]
-    const assignmentMatch = left.match(/=?(-?\d+\.?\d*)\s*->([a-zA-Z]+[a-zA-Z0-9_]*)$/);
+    const assignmentMatch = left.match(/=?(\[?-?\d+\.?\d*(,.*\])?)\s*->([a-zA-Z]+[a-zA-Z0-9_]*)$/);
     if (assignmentMatch) {
-      assignment(assignmentMatch[1], assignmentMatch[2].trim());
+      assignment(assignmentMatch[1], assignmentMatch[3].trim());
       break;
     }
     let result = calculate(`${left}=`, false)
@@ -104,7 +104,7 @@ function recalculation(operations_chain) {
     if (right_operation == undefined || right_operation === "") {
       break
     }
-    let rest = right_operation.match(/(\d+\.?\d*)(.*)/)[2]
+    let rest = right_operation.match(/(\[?\d+\.?\d*(,.*\])?)(.*)/)[3]
     parts[i+1] = `${result}${rest}`
   }
   return parts.join('=')
@@ -119,20 +119,49 @@ function calculate(value, noisy = true) {
       return;
     }
 
-    let result =  evaluate(expression);
-    if (result == undefined) {
-      if (noisy) alert('Invalid expression');
-      return;
+    let results = [];
+    if (/±/.test(expression)) {
+      let r1 = evaluate(expression.replace(/±/g, "+"));
+      let r2 = evaluate(expression.replace(/±/g, "-"));
+      if (r1 === undefined || r2 === undefined) {
+        if (noisy) alert('Error: Invalid expression.');
+        return;
+      }
+      results.push(r1);
+      results.push(r2);
+    } else {
+      let r1 = evaluate(expression);
+      if (r1 === undefined) {
+        if (noisy) alert('Error: Invalid expression.');
+        return;
+      }
+      results.push(r1);
     }
+
+    return castResults(results);
+  }
+}
+
+function castResults(results) {
+  // Apply conversions to each result
+  let processedResults = results.map(result => {
     if (Number.isFinite(result)) {
       if (Math.floor(result) === result) {
-        result = parseInt(result, 10);
+        return parseInt(result, 10);
       } else {
-        result = result.toFixed(decimals);
+        return result.toFixed(decimals);
       }
     }
     return result;
+  });
+
+  // If there's more than one result, return them as a string
+  if (processedResults.length > 1) {
+    return `[${processedResults.join(',')}]`;
   }
+
+  // If there's only one result, return it
+  return processedResults[0];
 }
 
 function displayVariables() {
@@ -146,10 +175,23 @@ function displayVariables() {
 
     const variableElement = document.createElement('p');
     let value = eval(variableValue);
-    if (Math.floor(value) === value) {
-      value = parseInt(value, 10);
+
+    // if value is an array, apply the conversion to each element
+    if (Array.isArray(value)) {
+      value = value.map(element => {
+        if (Math.floor(element) === element) {
+          return parseInt(element, 10);
+        } else {
+          return element.toFixed(decimals);
+        }
+      });
+      value = `[${value.join(',')}]`;
     } else {
-      value = eval(value).toFixed(decimals);
+      if (Math.floor(value) === value) {
+        value = parseInt(value, 10);
+      } else {
+        value = eval(value).toFixed(decimals);
+      }
     }
     variableElement.textContent = `${variableName}: ${value}`;
     if (assignedVariableNames.includes(variableName)) {
@@ -352,7 +394,7 @@ function adjust_width(input) {
 }
 
 function adjust_style(input) {
-  if (/=-?\d/.test(input.value) || /->[a-zA-Z]/.test(input.value)) {
+  if (/=\[?-?\d/.test(input.value) || /->[a-zA-Z]/.test(input.value)) {
     input.classList.remove('comment');
   } else {
     input.classList.add('comment');
@@ -512,11 +554,11 @@ function setCookie(cname, cvalue, exdays) {
 function evaluate(expression) {
   expression = applyReplacements(expression);
 
-  if (!/^[\[?\d+\-*%/.\s(),]*\]?$/.test(expression)) {
+  try {
+    return eval(expression);
+  } catch (e) {
     return;
   }
-
-  return eval(expression);
 }
 
 function applyReplacements(expression) {

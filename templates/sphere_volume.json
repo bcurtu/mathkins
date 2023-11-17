@@ -1,0 +1,7 @@
+{
+  "description": "The volume of a sphere",
+  "formula": "4/3*pi*r**3=",
+  "variables": [
+    "r: 1"
+  ]
+}

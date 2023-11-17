@@ -1,0 +1,7 @@
+{
+  "description": "The area of a sphere is 4 times pi times the radius squared.",
+  "formula": "4*pi*r**2=",
+  "variables": [
+    "r: 1"
+  ]
+}
