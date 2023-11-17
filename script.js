@@ -570,44 +570,44 @@ function applyReplacements(expression) {
     }
   });
 
-  expression = expression.replace(/sin\(.*\)/g, function (match) {
-    let expression = match.match(/^sin\((.*)\)/)[1];
+  expression = expression.replace(/sin\(([^)]*)\)/g, function (match) {
+    let expression = match.match(/^sin\(([^)]*)\)/)[1];
     let result = evaluate(expression);
     return Math.sin(result);
   });
 
-  expression = expression.replace(/cos\(.*\)/g, function (match) {
-    let expression = match.match(/^cos\((.*)\)/)[1];
+  expression = expression.replace(/cos\(([^)]*)\)/g, function (match) {
+    let expression = match.match(/^cos\(([^)]*)\)/)[1];
     let result = evaluate(expression);
     return Math.cos(result);
   });
 
-  expression = expression.replace(/tan\(.*\)/g, function (match) {
-    let expression = match.match(/^tan\((.*)\)/)[1];
+  expression = expression.replace(/tan\(([^)]*)\)/g, function (match) {
+    let expression = match.match(/^tan\(([^)]*)\)/)[1];
     let result = evaluate(expression);
     return Math.tan(result);
   });
 
-  expression = expression.replace(/sqrt\(.*\)/g, function (match) {
-    let expression = match.match(/^sqrt\((.*)\)/)[1];
+  expression = expression.replace(/sqrt\(([^)]*)\)/g, function (match) {
+    let expression = match.match(/sqrt\(([^)]*)\)/)[1];
     let result = evaluate(expression);
     return Math.sqrt(result);
   });
 
-  expression = expression.replace(/log\(.*\)/g, function (match) {
-    let expression = match.match(/^log\((.*)\)/)[1];
+  expression = expression.replace(/log\(([^)]*)\)/g, function (match) {
+    let expression = match.match(/^log\(([^)]*)\)/)[1];
     let result = evaluate(expression);
     return Math.log(result);
   });
 
-  expression = expression.replace(/abs\(.*\)/g, function (match) {
-    let expression = match.match(/^abs\((.*)\)/)[1];
+  expression = expression.replace(/abs\(([^)]*)\)/g, function (match) {
+    let expression = match.match(/^abs\(([^)]*)\)/)[1];
     let result = evaluate(expression);
     return Math.abs(result);
   });
 
-  expression = expression.replace(/round\(.*\)/g, function (match) {
-    let expression = match.match(/^round\((.*)\)/)[1];
+  expression = expression.replace(/round\(([^)]*)\)/g, function (match) {
+    let expression = match.match(/^round\(([^)]*)\)/)[1];
     let result = evaluate(expression);
     return Math.round(result);
   });
@@ -616,8 +616,8 @@ function applyReplacements(expression) {
     return Math.random();
   });
 
-  expression = expression.replace(/cbrt\(.*\)/g, function (match) {
-    let expression = match.match(/^cbrt\((.*)\)/)[1];
+  expression = expression.replace(/cbrt\(([^)]*)\)/g, function (match) {
+    let expression = match.match(/^cbrt\(([^)]*)\)/)[1];
     let result = evaluate(expression);
     return Math.cbrt(result);
   });
@@ -632,12 +632,6 @@ function applyReplacements(expression) {
     let rango = match.match(/^min\((.*)\)/)[1];
     let result = eval(rango);
     return Math.min(...result);
-  });
-
-  expression = expression.replace(/max\(.*\)/g, function (match) {
-    let rango = match.match(/^max\((.*)\)/)[1];
-    let result = eval(rango);
-    return Math.max(...result);
   });
 
   expression = expression.replace(/(-?\d+\.?\d*\s?\+\s?\d+\.?\d*\s?%)/g, function (match) {

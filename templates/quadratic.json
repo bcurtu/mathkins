@@ -1,9 +1,9 @@
 {
   "description": "Quadratic formula",
-  "formula": "(-b±sqrt(b**2-4ac))/(2a)",
+  "formula": "(-b±sqrt(b**2-4*a*c))/(2*a)",
   "variables": [
-    "a: 15",
-    "b: 2",
-    "c: 1"
+    "a: 1",
+    "b: 5",
+    "c: 6"
   ]
 }
