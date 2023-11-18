@@ -90,6 +90,14 @@
       });
     });
 
+    describe('recalculation', () => {
+      it("with functions as other function arguments", () => {
+        const expression = 'sin(cos(5*x))+23=0000-(4*8)-max([1,2,3])=0000+4';
+        const output = recalculation(expression);
+        assert.equal(output, 'sin(cos(5*x))+23=22.31-(4*8)-max([1,2,3])=-12.69+4');
+      });
+    });
+
     describe('adjust_style', () => {
       it("when it's an string", () => {
         const input = document.createElement('input');
