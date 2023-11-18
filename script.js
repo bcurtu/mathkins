@@ -62,7 +62,7 @@ function process_cmd(input) {
   }
   if (result != undefined) {
     input.value = `${result}`;
-    adjust_style(input);
+    applyStyle(input);
     saveState();
   }
 }
@@ -289,7 +289,7 @@ function loadState() {
     input.style.left = inputData.left;
     input.classList.add('expression');
     input.draggable = "true";
-    adjust_style(input);
+    applyStyle(input);
 
     document.body.appendChild(input);
   });
@@ -356,28 +356,28 @@ function add_listeners_to_input(input) {
     if (lastKey === '=' || lastKey === 'Enter'  ||
         event.key === '=' || event.key === 'Enter') {
       process_cmd(input);
-      adjust_style(input);
+      applyStyle(input);
     } else if (lastKey === 'Tab' || event.key === 'Tab') {
       process_cmd(input);
-      adjust_style(input);
+      applyStyle(input);
       addTextInput(input.offsetLeft, input.offsetTop + 35);
     }
-    adjust_width(input);
+    adjustWidth(input);
     lastKey = null;
   });
 
   input.addEventListener('input', function (event) {
     if (input.value.endsWith('=')) {
       process_cmd(input);
-      adjust_style(input);
-      adjust_width(input);
+      applyStyle(input);
+      adjustWidth(input);
     }
   });
   input.addEventListener('dragstart', dragStart);
   input.addEventListener('dragend', dragEnd);
 }
 
-function adjust_width(input) {
+function adjustWidth(input) {
   const preWidth = input.offsetWidth;
   let newWidth;
   if (input.classList.contains('comment')) {
@@ -390,13 +390,16 @@ function adjust_width(input) {
   }
 }
 
-function adjust_style(input) {
-  if (/=\[?-?\d/.test(input.value) || /->[a-zA-Z]/.test(input.value)) {
+function applyStyle(input) {
+  if (/=\[?-?\d/.test(input.value) ||
+      /=[NaN|Infinity]/.test(input.value) ||
+      /->[a-zA-Z]/.test(input.value)
+    ) {
     input.classList.remove('comment');
   } else {
     input.classList.add('comment');
   }
-  adjust_width(input);
+  adjustWidth(input);
 }
 
 function reset() {
@@ -470,7 +473,7 @@ function recalculate_variable(variable) {
       let result = recalculation(input.value);
       if (result) {
         input.value = result;
-        adjust_style(input);
+        applyStyle(input);
         saveState();
       }
     }

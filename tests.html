@@ -98,39 +98,53 @@
       });
     });
 
-    describe('adjust_style', () => {
+    describe('applyStyle', () => {
       it("when it's an string", () => {
         const input = document.createElement('input');
         input.value = "texto";
-        adjust_style(input);
+        applyStyle(input);
         assert.equal(input.classList.contains("comment"), true);
       });
 
       it("when it's an operation", () => {
         const input = document.createElement('input');
         input.value = "3+4=7";
-        adjust_style(input);
+        applyStyle(input);
         assert.equal(input.classList.contains("comment"), false);
       });
 
       it("when it's an operation with ranges", () => {
         const input = document.createElement('input');
         input.value = "sum([3,4])=7";
-        adjust_style(input);
+        applyStyle(input);
         assert.equal(input.classList.contains("comment"), false);
       });
 
       it("when the result is a range", () => {
         const input = document.createElement('input');
         input.value = "5±7=[12,-2]";
-        adjust_style(input);
+        applyStyle(input);
         assert.equal(input.classList.contains("comment"), false);
       });
 
       it("when it's an assignation", () => {
         const input = document.createElement('input');
         input.value = "3+4=7->x";
-        adjust_style(input);
+        applyStyle(input);
+        assert.equal(input.classList.contains("comment"), false);
+      });
+
+      it("when it's an Infinity", () => {
+        const input = document.createElement('input');
+        input.value = "1/0=Infinity";
+        applyStyle(input);
+        assert.equal(input.classList.contains("comment"), false);
+      });
+
+      it("when it's an NaN", () => {
+        const input = document.createElement('input');
+        input.value = "sqrt(-1)=NaN";
+        applyStyle(input);
         assert.equal(input.classList.contains("comment"), false);
       });
     });
