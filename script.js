@@ -29,6 +29,7 @@ function tutorial() {
 function focusOnFirstOperation() {
   let input = document.querySelectorAll('input.expression.comment')[1];
   input.classList.remove('comment');
+  input.style.width = '160px';
   input.focus();
 }
 
@@ -66,7 +67,7 @@ function process_cmd(input) {
   }
 }
 
-function assignment(variableValue, variableName) {
+function pad_assignment(variableValue, variableName) {
   if (variableName in variables &&
       !(assignedVariableNames.includes(variableName))
     ) {
@@ -79,11 +80,9 @@ function assignment(variableValue, variableName) {
     return;
   }
 
-  if (variables[variableName] != variableValue) {
-    variables[variableName] = variableValue;
-    if (!assignedVariableNames.includes(variableName)) {
-      assignedVariableNames.push(variableName);
-    }
+  if (get_variable(variableName) != variableValue) {
+    set_variable(variableName, variableValue);
+
     displayVariables();
     recalculate_variable(variableName);
     saveState();
@@ -96,7 +95,7 @@ function recalculation(operations_chain) {
     let left = parts[i]
     const assignmentMatch = left.match(/=?(\[?-?\d+\.?\d*(,.*\])?)\s*->([a-zA-Z]+[a-zA-Z0-9_]*)$/);
     if (assignmentMatch) {
-      assignment(assignmentMatch[1], assignmentMatch[3].trim());
+      pad_assignment(assignmentMatch[1], assignmentMatch[3].trim());
       break;
     }
     let result = calculate(`${left}=`, false)
@@ -171,7 +170,7 @@ function displayVariables() {
   const variableNames = Object.keys(variables).sort();
 
   for (const variableName of variableNames) {
-    const variableValue = variables[variableName];
+    const variableValue = get_variable(variableName);
 
     const variableElement = document.createElement('p');
     let value = eval(variableValue);
@@ -220,7 +219,7 @@ function addVariable() {
       return;
     }
 
-    variables[variableName] = variableValue;
+    set_variable(variableName, variableValue, false);
 
     displayVariables();
     recalculate_variable(variableName);
@@ -230,6 +229,18 @@ function addVariable() {
   }
 
   newVariableInput.value = '';
+}
+
+function set_variable(variableName, variableValue, protected = true) {
+  variableName = variableName.trim();
+  variables[variableName] = variableValue;
+  if (protected && !assignedVariableNames.includes(variableName)) {
+    assignedVariableNames.push(variableName);
+  }
+}
+
+function get_variable(variableName) {
+  return variables[variableName.trim()];
 }
 
 function saveState() {
@@ -335,7 +346,6 @@ function importStateData(stateData) {
 function add_listeners_to_input(input) {
   input.addEventListener('keydown', function (event) {
     lastKey = event.key;
-    // document.getElementById("log").appendChild(document.createTextNode(" * KeyDown=" + event.which));
     if (lastKey === 'Enter' || lastKey === 'Tab') {
       event.preventDefault();
       return;
@@ -343,7 +353,6 @@ function add_listeners_to_input(input) {
   });
 
   input.addEventListener('keyup', function (event) {
-    // document.getElementById("log").appendChild(document.createTextNode(" * KeyUp=" + event.which));
     if (lastKey === '=' || lastKey === 'Enter'  ||
         event.key === '=' || event.key === 'Enter') {
       process_cmd(input);
@@ -355,18 +364,6 @@ function add_listeners_to_input(input) {
     }
     adjust_width(input);
     lastKey = null;
-  });
-
-  input.addEventListener('focusout', function (event) {
-    if (input.value.trim() === '') {
-      document.body.removeChild(input);
-      return;
-    }
-    if (input.value.endsWith('=')) {
-      process_cmd(input);
-      adjust_style(input);
-      adjust_width(input);
-    }
   });
 
   input.addEventListener('input', function (event) {
@@ -552,8 +549,13 @@ function setCookie(cname, cvalue, exdays) {
 }
 
 function evaluate(expression) {
-  expression = applyReplacements(expression);
-
+  while (true) {
+    const initial_expression = expression;
+    expression = applyReplacements(expression);
+    if (expression === initial_expression) {
+      break;
+    }
+  }
   try {
     return eval(expression);
   } catch (e) {
@@ -564,117 +566,151 @@ function evaluate(expression) {
 function applyReplacements(expression) {
   expression = expression.replace(/[a-zA-Z]+[a-zA-Z0-9_]*/g, function (match) {
     if (match in variables) {
-      return variables[match];
+      return get_variable(match);
     } else {
       return match;
     }
   });
 
-  expression = expression.replace(/sin\(([^)]*)\)/g, function (match) {
-    let expression = match.match(/^sin\(([^)]*)\)/)[1];
-    let result = evaluate(expression);
-    return Math.sin(result);
-  });
+  try {
+    expression = expression.replace(/sin\(([^)]*)\)/g, function (match) {
+      let expression = match.match(/^sin\(([^)]*)\)/)[1];
+      let result = eval(expression);
+      return Math.sin(result);
+    });
+  } catch (e) { }
 
-  expression = expression.replace(/cos\(([^)]*)\)/g, function (match) {
-    let expression = match.match(/^cos\(([^)]*)\)/)[1];
-    let result = evaluate(expression);
-    return Math.cos(result);
-  });
+  try {
+    expression = expression.replace(/cos\(([^)]*)\)/g, function (match) {
+      let expression = match.match(/^cos\(([^)]*)\)/)[1];
+      let result = eval(expression);
+      return Math.cos(result);
+    });
+  } catch (e) { }
 
+  try {
   expression = expression.replace(/tan\(([^)]*)\)/g, function (match) {
     let expression = match.match(/^tan\(([^)]*)\)/)[1];
-    let result = evaluate(expression);
+    let result = eval(expression);
     return Math.tan(result);
   });
+  } catch (e) { }
 
-  expression = expression.replace(/sqrt\(([^)]*)\)/g, function (match) {
-    let expression = match.match(/sqrt\(([^)]*)\)/)[1];
-    let result = evaluate(expression);
-    return Math.sqrt(result);
-  });
+  try {
+    expression = expression.replace(/sqrt\(([^)]*)\)/g, function (match) {
+      let expression = match.match(/sqrt\(([^)]*)\)/)[1];
+      let result = eval(expression);
+      return Math.sqrt(result);
+    });
+  } catch (e) { }
 
-  expression = expression.replace(/log\(([^)]*)\)/g, function (match) {
-    let expression = match.match(/^log\(([^)]*)\)/)[1];
-    let result = evaluate(expression);
-    return Math.log(result);
-  });
+  try {
+    expression = expression.replace(/log\(([^)]*)\)/g, function (match) {
+      let expression = match.match(/^log\(([^)]*)\)/)[1];
+      let result = eval(expression);
+      return Math.log(result);
+    });
+  } catch (e) { }
 
-  expression = expression.replace(/abs\(([^)]*)\)/g, function (match) {
-    let expression = match.match(/^abs\(([^)]*)\)/)[1];
-    let result = evaluate(expression);
-    return Math.abs(result);
-  });
+  try {
+    expression = expression.replace(/abs\(([^)]*)\)/g, function (match) {
+      let expression = match.match(/^abs\(([^)]*)\)/)[1];
+      let result = eval(expression);
+      return Math.abs(result);
+    });
+  } catch (e) { }
 
-  expression = expression.replace(/round\(([^)]*)\)/g, function (match) {
-    let expression = match.match(/^round\(([^)]*)\)/)[1];
-    let result = evaluate(expression);
-    return Math.round(result);
-  });
+  try {
+    expression = expression.replace(/round\(([^)]*)\)/g, function (match) {
+      let expression = match.match(/^round\(([^)]*)\)/)[1];
+      let result = eval(expression);
+      return Math.round(result);
+    });
+  } catch (e) { }
 
-  expression = expression.replace(/random\(\)/g, function (match) {
-    return Math.random();
-  });
+  try {
+    expression = expression.replace(/random\(\)/g, function (match) {
+      return Math.random();
+    });
+  } catch (e) { }
 
-  expression = expression.replace(/cbrt\(([^)]*)\)/g, function (match) {
-    let expression = match.match(/^cbrt\(([^)]*)\)/)[1];
-    let result = evaluate(expression);
-    return Math.cbrt(result);
-  });
+  try {
+    expression = expression.replace(/cbrt\(([^)]*)\)/g, function (match) {
+      let expression = match.match(/^cbrt\(([^)]*)\)/)[1];
+      let result = eval(expression);
+      return Math.cbrt(result);
+    });
+  } catch (e) { }
 
-  expression = expression.replace(/max\(.*\)/g, function (match) {
-    let rango = match.match(/^max\((.*)\)/)[1];
-    let result = eval(rango);
-    return Math.max(...result);
-  });
+  try {
+    expression = expression.replace(/max\(.*\)/g, function (match) {
+      let rango = match.match(/^max\((.*)\)/)[1];
+      let result = eval(rango);
+      return Math.max(...result);
+    });
+  } catch (e) { }
 
-  expression = expression.replace(/min\(.*\)/g, function (match) {
-    let rango = match.match(/^min\((.*)\)/)[1];
-    let result = eval(rango);
-    return Math.min(...result);
-  });
+  try {
+    expression = expression.replace(/min\(.*\)/g, function (match) {
+      let rango = match.match(/^min\((.*)\)/)[1];
+      let result = eval(rango);
+      return Math.min(...result);
+    });
+  } catch (e) { }
 
-  expression = expression.replace(/sum\(\[.*\]\)/g, function (match) {
-    let array_str = match.match(/^sum\((\[.*\])\)/)[1];
-    let array = eval(array_str);
-    return array.reduce((a, b) => a + b, 0);
-  });
+  try {
+    expression = expression.replace(/sum\(\[.*\]\)/g, function (match) {
+      let array_str = match.match(/^sum\((\[.*\])\)/)[1];
+      let array = eval(array_str);
+      return array.reduce((a, b) => a + b, 0);
+    });
+  } catch (e) { }
 
-  expression = expression.replace(/cnt\(\[.*\]\)/g, function (match) {
-    let array_str = match.match(/^cnt\((\[.*\])\)/)[1];
-    let array = eval(array_str);
-    return array.length;
-  });
+  try {
+    expression = expression.replace(/cnt\(\[.*\]\)/g, function (match) {
+      let array_str = match.match(/^cnt\((\[.*\])\)/)[1];
+      let array = eval(array_str);
+      return array.length;
+    });
+  } catch (e) { }
 
-  expression = expression.replace(/avg\(\[.*\]\)/g, function (match) {
-    let array_str = match.match(/^avg\((\[.*\])\)/)[1];
-    let array = eval(array_str);
-    return array.reduce((a, b) => a + b, 0)/array.length;
-  })
+  try {
+    expression = expression.replace(/avg\(\[.*\]\)/g, function (match) {
+      let array_str = match.match(/^avg\((\[.*\])\)/)[1];
+      let array = eval(array_str);
+      return array.reduce((a, b) => a + b, 0)/array.length;
+    });
+  } catch (e) { }
 
-  expression = expression.replace(/(-?\d+\.?\d*\s?\+\s?\d+\.?\d*\s?%)/g, function (match) {
-    let parts = match.match(/(-?\d+\.?\d*)\s?(\+\s?(\d+\.?\d*)?\s?%)/);
-    let base = parseFloat(parts[1]);
-    let percent = parseFloat(parts[3]);
-    let result = base + (base * percent / 100);
-    return result;
-  });
+  try {
+    expression = expression.replace(/(-?\d+\.?\d*\s?\+\s?\d+\.?\d*\s?%)/g, function (match) {
+      let parts = match.match(/(-?\d+\.?\d*)\s?(\+\s?(\d+\.?\d*)?\s?%)/);
+      let base = parseFloat(parts[1]);
+      let percent = parseFloat(parts[3]);
+      let result = base + (base * percent / 100);
+      return result;
+    });
+  } catch (e) { }
 
-  expression = expression.replace(/(-?\d+\.?\d*\s?-\s?\d+\.?\d*\s?%)/g, function (match) {
-    let parts = match.match(/(-?\d+\.?\d*)\s?(-\s?(\d+\.?\d*)?\s?%)/);
-    let base = parseFloat(parts[1]);
-    let percent = parseFloat(parts[3]);
-    let result = base - (base * percent / 100);
-    return result;
-  });
+  try {
+    expression = expression.replace(/(-?\d+\.?\d*\s?-\s?\d+\.?\d*\s?%)/g, function (match) {
+      let parts = match.match(/(-?\d+\.?\d*)\s?(-\s?(\d+\.?\d*)?\s?%)/);
+      let base = parseFloat(parts[1]);
+      let percent = parseFloat(parts[3]);
+      let result = base - (base * percent / 100);
+      return result;
+    });
+  } catch (e) { }
 
-  expression = expression.replace(/(\d+\.?\d*%\s*\(.*\))/g, function (match) {
-    let parts = match.match(/(\d+\.?\d*)%\s*\((.*)\)/);
-    let percent = parseFloat(parts[1]);
-    let base = eval(parts[2]);
-    let result = base * percent / 100;
-    return result;
-  });
+  try {
+    expression = expression.replace(/(\d+\.?\d*%\s*\(.*\))/g, function (match) {
+      let parts = match.match(/(\d+\.?\d*)%\s*\((.*)\)/);
+      let percent = parseFloat(parts[1]);
+      let base = eval(parts[2]);
+      let result = base * percent / 100;
+      return result;
+    });
+  } catch (e) { }
 
   expression = expression.replace(/--/g, function (match) {
     return "+";
