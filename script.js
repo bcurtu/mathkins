@@ -634,6 +634,24 @@ function applyReplacements(expression) {
     return Math.min(...result);
   });
 
+  expression = expression.replace(/sum\(\[.*\]\)/g, function (match) {
+    let array_str = match.match(/^sum\((\[.*\])\)/)[1];
+    let array = eval(array_str);
+    return array.reduce((a, b) => a + b, 0);
+  });
+
+  expression = expression.replace(/cnt\(\[.*\]\)/g, function (match) {
+    let array_str = match.match(/^cnt\((\[.*\])\)/)[1];
+    let array = eval(array_str);
+    return array.length;
+  });
+
+  expression = expression.replace(/avg\(\[.*\]\)/g, function (match) {
+    let array_str = match.match(/^avg\((\[.*\])\)/)[1];
+    let array = eval(array_str);
+    return array.reduce((a, b) => a + b, 0)/array.length;
+  })
+
   expression = expression.replace(/(-?\d+\.?\d*\s?\+\s?\d+\.?\d*\s?%)/g, function (match) {
     let parts = match.match(/(-?\d+\.?\d*)\s?(\+\s?(\d+\.?\d*)?\s?%)/);
     let base = parseFloat(parts[1]);

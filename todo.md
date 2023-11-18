@@ -1,8 +1,5 @@
 * Cookies warning (g analytics)
 
-* Rangos []
-* añadir las funciones para rangos: sum, avg, count
-
 * Buymeacoffee
 
 * tests
@@ -12,3 +9,6 @@
 * Example sheet
 
 * Drag and drop
+
+* ! factorial
+* rad to dgr ?
