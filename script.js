@@ -366,6 +366,14 @@ function add_listeners_to_input(input) {
     lastKey = null;
   });
 
+  input.addEventListener('focusout', function (event) {
+    if (/^@\s?[a-zA-Z]+[a-zA-Z0-9_]*/.test(input.value)) {
+      process_cmd(input);
+      applyStyle(input);
+      adjustWidth(input);
+    }
+  });
+
   input.addEventListener('input', function (event) {
     if (input.value.endsWith('=')) {
       process_cmd(input);
