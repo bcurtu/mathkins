@@ -72,6 +72,12 @@
         const output = eval(applyReplacements(expression)).toFixed(2);
         assert.equal(output, expectedOutput);
       });
+
+      it("radians to degrees and degrees to radians", () => {
+        const expression = 'deg(2*pi) + rad(180)';
+        const output = eval(applyReplacements(expression)).toFixed(2);
+        assert.equal(output, 363.14);
+      });
     });
 
     describe('evaluate', () => {

@@ -660,6 +660,22 @@ function applyReplacements(expression) {
   } catch (e) { }
 
   try {
+    expression = expression.replace(/deg\(([^)]*)\)/g, function (match) {
+      let expression = match.match(/^deg\(([^)]*)\)/)[1];
+      let radians = eval(expression);
+      return radians * 180 / Math.PI;
+    });
+  } catch (e) { }
+
+  try {
+    expression = expression.replace(/rad\(([^)]*)\)/g, function (match) {
+      let expression = match.match(/^rad\(([^)]*)\)/)[1];
+      let degress = eval(expression);
+      return degress * Math.PI / 180;
+    });
+  } catch (e) { }
+
+  try {
     expression = expression.replace(/max\(.*\)/g, function (match) {
       let rango = match.match(/^max\((.*)\)/)[1];
       let result = eval(rango);
