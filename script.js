@@ -575,6 +575,8 @@ function applyReplacements(expression) {
     }
   });
 
+  expression = expression.toLowerCase();
+
   try {
     expression = expression.replace(/sin\(([^)]*)\)/g, function (match) {
       let expression = match.match(/^sin\(([^)]*)\)/)[1];

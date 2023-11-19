@@ -88,6 +88,34 @@
         const output = evaluate(expression).toFixed(2);
         assert.equal(output, expectedOutput);
       });
+
+      it("ignores case", () => {
+        const expression = 'ABS(Sin(cOS(5*x))) + lOg(e)';
+        const expectedOutput = 1.69;
+        const output = evaluate(expression).toFixed(2);
+        assert.equal(output, expectedOutput);
+      });
+
+      it("with -%", () => {
+        const expression = '30-15%';
+        const expectedOutput = 25.50;
+        const output = evaluate(expression).toFixed(2);
+        assert.equal(output, expectedOutput);
+      });
+
+      it("with %()", () => {
+        const expression = '15%(x*10)';
+        const expectedOutput = 4.50;
+        const output = evaluate(expression).toFixed(2);
+        assert.equal(output, expectedOutput);
+      });
+
+      it("with % modulus", () => {
+        const expression = '5%4';
+        const expectedOutput = 1;
+        const output = evaluate(expression).toFixed(2);
+        assert.equal(output, expectedOutput);
+      });
     });
 
     describe('recalculation', () => {
