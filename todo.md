@@ -1,9 +1,5 @@
 * Cookies warning (g analytics)
 
-* Buymeacoffee
-
-* tests
-
 * tutorial, chain enter events
 
 * Example sheet

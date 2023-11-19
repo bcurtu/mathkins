@@ -82,6 +82,16 @@ input.setdecimals {
   font: 14px Courier;
 }
 
+.bmc {
+  position: fixed;
+  bottom: 10px;
+  text-align: center;
+}
+
+.bmc img {
+  width: 70%;
+}
+
 .log {
   display: none;
 }
@@ -145,6 +155,12 @@ input.setdecimals {
 
   .variablesContainer {
     height: auto;
+  }
+
+  .bmc {
+    position: static;
+    margin-top: 20px;
+    text-align: center;
   }
 
   .log {
