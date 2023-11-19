@@ -160,7 +160,12 @@ input.setdecimals {
   .bmc {
     position: static;
     margin-top: 20px;
+    margin-bottom: 10px;
     text-align: center;
+  }
+
+  .bmc img {
+    width: 40%;
   }
 
   .log {
