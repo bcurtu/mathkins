@@ -367,7 +367,11 @@ function add_listeners_to_input(input) {
   });
 
   input.addEventListener('focusout', function (event) {
-    if (/^@\s?[a-zA-Z]+[a-zA-Z0-9_]*/.test(input.value)) {
+    if (input.value.trim() === '') {
+      document.body.removeChild(input);
+      return;
+    }
+    if (/->[a-zA-Z]+[a-zA-Z0-9_]*$/.test(input.value)) {
       process_cmd(input);
       applyStyle(input);
       adjustWidth(input);
